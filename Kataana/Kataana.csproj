@@ -132,10 +132,12 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\GetAllModel.cs" />
     <Compile Include="Models\JSON\JSONBloodwebModel.cs" />
     <Compile Include="Models\JSON\JSONMarketModel.cs" />
     <Compile Include="Models\JSON\JSONGetAllModel.cs" />
     <Compile Include="Models\JSON\JSONSettingsModel.cs" />
+    <Compile Include="Models\BloodwebModel.cs" />
     <Compile Include="Models\MarketModel.cs" />
     <Compile Include="Models\OptionsModel.cs" />
     <Compile Include="Models\AssemblyModel.cs" />
@@ -145,6 +147,8 @@
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Tools\Requests.cs" />
     <Compile Include="ViewModels\AccountViewModel.cs" />
+    <Compile Include="ViewModels\GetAllViewModel.cs" />
+    <Compile Include="ViewModels\BloodwebViewModel.cs" />
     <Compile Include="ViewModels\MarketViewModel.cs" />
     <Compile Include="ViewModels\OptionsViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />

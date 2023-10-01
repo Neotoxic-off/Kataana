@@ -19,19 +19,36 @@ using System.Reflection;
 using System.Windows.Media;
 using System.Net.Http;
 using System.Collections.ObjectModel;
+using Newtonsoft.Json;
 
 namespace Kataana.ViewModels
 {
     public class ProxyViewModel: BaseViewModel
     {
         public ProxyModel ProxyModel { get; set; }
+
+        private AccountViewModel _accountViewModel;
+        public AccountViewModel AccountViewModel
+        {
+            get { return _accountViewModel; }
+            set { SetProperty(ref _accountViewModel, value); }
+        }
+
+        private MarketViewModel _marketViewModel;
+        public MarketViewModel MarketViewModel
+        {
+            get { return _marketViewModel; }
+            set { SetProperty(ref _marketViewModel, value); }
+        }
+        public BloodwebViewModel BloodwebViewModel { get; set; }
+        public GetAllViewModel GetAllViewModel { get; set; }
         public OptionsViewModel OptionsViewModel { get; set; }
         private Dictionary<bool, Action<object>> States { get; set; }
         private Dictionary<bool, string> Labels { get; set; }
-        private Dictionary<string, Func<SessionEventArgs, Task<SessionEventArgs>>> Corrupters { get; set; }
+        private Dictionary<string, Func<SessionEventArgs, SessionEventArgs>> Corrupters { get; set; }
         public DelegateCommand ChangeStateProxyCommand { get; set; }
 
-        public ProxyViewModel()
+        public ProxyViewModel(AccountViewModel accountViewModel, MarketViewModel marketViewModel)
         {
             ProxyModel = new ProxyModel()
             {
@@ -39,6 +56,10 @@ namespace Kataana.ViewModels
                 CertificatePath = "certificate.pfx",
                 CertificatePassword = "Kataana"
             };
+            AccountViewModel = accountViewModel;
+            MarketViewModel = marketViewModel;
+            BloodwebViewModel = new BloodwebViewModel();
+            GetAllViewModel = new GetAllViewModel();
             OptionsViewModel = new OptionsViewModel();
             States = new Dictionary<bool, Action<object>>()
             {
@@ -50,7 +71,7 @@ namespace Kataana.ViewModels
                 { false, "Start" },
                 { true, "Stop" }
             };
-            Corrupters = new Dictionary<string, Func<SessionEventArgs, Task<SessionEventArgs>>>()
+            Corrupters = new Dictionary<string, Func<SessionEventArgs, SessionEventArgs>>()
             {
                 { "/v1/inventories", ManipulateInventories },
                 { "/v1/dbd-character-data/bloodweb", ManipulateBloodweb },
@@ -106,39 +127,17 @@ namespace Kataana.ViewModels
         {
             string[] methods = { "GET", "POST", "PUT" };
 
-            if (methods.Contains(e.HttpClient.Request.Method) == true)
+            if (methods.Contains(e.HttpClient.Request.Method.ToUpper()) == true)
             {
-                ProxyModel.Logs.Add($"{e.HttpClient.Request.Url}");
-
                 if (e.HttpClient.Request.Url.Contains("bhvrdbd") == true)
                 {
-                    if (IsCorruptable(e.HttpClient.Request.Url) == true)
-                        await Corrupters[e.HttpClient.Request.Url](e);
+                    if (IsCorruptable(e.HttpClient.Request.RequestUri.LocalPath) == true)
+                    {
+                        Corrupters[e.HttpClient.Request.RequestUri.LocalPath](e);
+                    }
                 }
             }
             
-            //if (sess.fullUrl.Contains("/v1/queue") == true)
-            //{
-            //    eventer(MethodBase.GetCurrentMethod().Name, $"checking queue");
-            //    variables.response = sess.GetResponseBodyAsString();
-            //    if (variables.response.Contains("queueData") == true && variables.response.Contains("position") == true)
-            //    {
-            //        eventer(MethodBase.GetCurrentMethod().Name, $"deserializing body");
-            //        variables.queue = JsonConvert.DeserializeObject<settings.Queue.Rootobject>(
-            //            variables.response
-            //        );
-            //        eventer(MethodBase.GetCurrentMethod().Name, $"body deserialized");
-            //        if (variables.queue.status == "QUEUED")
-            //        {
-            //            eventer(MethodBase.GetCurrentMethod().Name, $"player in queue: {variables.queue.status}");
-            //            variables.manager.label(label_queue, $"{variables.queue.queueData.position}", Color.Violet);
-            //        }
-            //        else
-            //        {
-            //            eventer(MethodBase.GetCurrentMethod().Name, $"queue status: {variables.queue.status}");
-            //        }
-            //    }
-            //}
             //if (sess.fullUrl.Contains("v1/dbd-character-data/bloodweb") == true && variables.manager.get_switch_button(switch_savefile) == true)
             //{
             //    string tmp = Encoding.UTF8.GetString(Properties.Resources.Bloodweb);
@@ -165,9 +164,9 @@ namespace Kataana.ViewModels
 
         private bool IsCorruptable(string Url)
         {
-            foreach (KeyValuePair<string, Func<SessionEventArgs, Task<SessionEventArgs>>> data in Corrupters)
+            foreach (KeyValuePair<string, Func<SessionEventArgs, SessionEventArgs>> data in Corrupters)
             {
-                if (Url.EndsWith(data.Key) == true)
+                if (Url == data.Key)
                 {
                     return (true);
                 }
@@ -176,31 +175,48 @@ namespace Kataana.ViewModels
             return (false);
         }
 
-        private async Task<SessionEventArgs> ManipulateInventories(SessionEventArgs session)
+        private SessionEventArgs ManipulateInventories(SessionEventArgs session)
         {
-            if (OptionsViewModel.OptionsModel.CustomMarket == true)
+            string modifiedResponseBody = null;
+
+            if (OptionsViewModel.OptionsModel.UnlockMarket == true)
             {
-                
+                modifiedResponseBody = Newtonsoft.Json.JsonConvert.SerializeObject(MarketViewModel.MarketModel.JSONMarketModel);
+                session.SetResponseBodyString(modifiedResponseBody);
+                session.HttpClient.Response.ContentLength = modifiedResponseBody.Length;
             }
 
-            //session.SetResponseBodyString(modifiedResponseBody);
-            //session.HttpClient.Response.ContentLength = modifiedResponseBody.Length;
+            return (session);
+        }
+
+        private SessionEventArgs ManipulateBloodweb(SessionEventArgs session)
+        {
+            string modifiedResponseBody = null;
+
+            if (OptionsViewModel.OptionsModel.TemporaryUnlock == true)
+            {
+                modifiedResponseBody = JsonConvert.SerializeObject(
+                    BloodwebViewModel.BloodwebModel.JSONBloodwebModel
+                );
+                session.SetResponseBodyString(modifiedResponseBody);
+                session.HttpClient.Response.ContentLength = modifiedResponseBody.Length;
+            }
 
             return (session);
         }
 
-        private async Task<SessionEventArgs> ManipulateBloodweb(SessionEventArgs session)
+        private SessionEventArgs ManipulateGetAll(SessionEventArgs session)
         {
-            //session.SetResponseBodyString(modifiedResponseBody);
-            //session.HttpClient.Response.ContentLength = modifiedResponseBody.Length;
+            string modifiedResponseBody = null;
 
-            return (session);
-        }
-
-        private async Task<SessionEventArgs> ManipulateGetAll(SessionEventArgs session)
-        {
-            //session.SetResponseBodyString(modifiedResponseBody);
-            //session.HttpClient.Response.ContentLength = modifiedResponseBody.Length;
+            if (OptionsViewModel.OptionsModel.TemporaryUnlock == true)
+            {
+                modifiedResponseBody = JsonConvert.SerializeObject(
+                    GetAllViewModel.GetAllModel.JSONGetAllModel
+                );
+                session.SetResponseBodyString(modifiedResponseBody);
+                session.HttpClient.Response.ContentLength = modifiedResponseBody.Length;
+            }
 
             return (session);
         }

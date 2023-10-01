@@ -1,5 +1,9 @@
 {
-    "MarketFile": "market.json",
     "VersionFlux": "https://raw.githubusercontent.com/Elevatia/Market/main/version",
-    "MarketFlux": "https://raw.githubusercontent.com/Elevatia/Market/main/market.json"
+    "MarketFile": "market.json",
+    "MarketFlux": "https://raw.githubusercontent.com/Elevatia/Market/main/market.json",
+    "BloodwebFile": "bloodweb.json",
+    "BloodwebFlux": "https://raw.githubusercontent.com/Elevatia/Market/main/bloodweb.json",
+    "GetAllFile": "getall.json",
+    "GetAllFileFlux": "https://raw.githubusercontent.com/Elevatia/Market/main/getall.json"
 }

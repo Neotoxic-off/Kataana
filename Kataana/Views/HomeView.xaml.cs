@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Kataana.Models;
+using Kataana.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +22,13 @@ namespace Kataana.Views
     /// </summary>
     public partial class HomeView : UserControl
     {
-        public HomeView()
+        public HomeViewModel HomeViewModel { get; set; }
+
+        public HomeView(UserControl accountViewModel, UserControl marketViewModel)
         {
             InitializeComponent();
+
+            DataContext = new HomeViewModel(accountViewModel, marketViewModel);
         }
     }
 }

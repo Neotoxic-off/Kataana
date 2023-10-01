@@ -28,5 +28,33 @@ namespace Kataana.Models.JSON
             get { return _marketFile; }
             set { SetProperty(ref _marketFile, value); }
         }
+
+        private string _bloodwebFile;
+        public string BloodwebFile
+        {
+            get { return _bloodwebFile; }
+            set { SetProperty(ref _bloodwebFile, value); }
+        }
+
+        private string _bloodwebFlux;
+        public string BloodwebFlux
+        {
+            get { return _bloodwebFlux; }
+            set { SetProperty(ref _bloodwebFlux, value); }
+        }
+
+        private string _getallFile;
+        public string GetAllFile
+        {
+            get { return _getallFile; }
+            set { SetProperty(ref _getallFile, value); }
+        }
+
+        private string _getallFlux;
+        public string GetAllFlux
+        {
+            get { return _getallFlux; }
+            set { SetProperty(ref _getallFlux, value); }
+        }
     }
 }

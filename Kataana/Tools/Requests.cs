@@ -27,10 +27,7 @@ namespace Kataana.Tools
                 SetHeaders(request, headersJson);
                 response = await httpClient.SendAsync(request);
 
-                if (response.IsSuccessStatusCode == true)
-                {
-                    return (await response.Content.ReadAsStringAsync());
-                }
+                return (await response.Content.ReadAsStringAsync());
             }
             
             return (null);
@@ -46,10 +43,7 @@ namespace Kataana.Tools
                 SetHeaders(request, headersJson);
                 response = await httpClient.SendAsync(request);
 
-                if (response.IsSuccessStatusCode == true)
-                {
-                    return (await response.Content.ReadAsStringAsync());
-                }
+                return (await response.Content.ReadAsStringAsync());
             }
 
             return (null);
@@ -66,10 +60,7 @@ namespace Kataana.Tools
                 SetHeaders(request, headersJson);
                 response = await httpClient.SendAsync(request);
 
-                if (response.IsSuccessStatusCode == true)
-                {
-                    return (await response.Content.ReadAsStringAsync());
-                }
+                return(await response.Content.ReadAsStringAsync());
             }
 
             return (null);
@@ -86,10 +77,7 @@ namespace Kataana.Tools
                 SetHeaders(request, headersJson);
                 response = await httpClient.SendAsync(request);
 
-                if (response.IsSuccessStatusCode == true)
-                {
-                    return (await response.Content.ReadAsStringAsync());
-                }
+                return (await response.Content.ReadAsStringAsync());
             }
 
             return (null);
@@ -106,10 +94,7 @@ namespace Kataana.Tools
                 SetHeaders(request, headersJson);
                 response = await httpClient.SendAsync(request);
 
-                if (response.IsSuccessStatusCode == true)
-                {
-                    return (await response.Content.ReadAsStringAsync());
-                }
+                return (await response.Content.ReadAsStringAsync());
             }
 
             return (null);
@@ -126,10 +111,7 @@ namespace Kataana.Tools
                 SetHeaders(request, headersJson);
                 response = await httpClient.SendAsync(request);
 
-                if (response.IsSuccessStatusCode == true)
-                {
-                    return (await response.Content.ReadAsStringAsync());
-                }
+                return (await response.Content.ReadAsStringAsync());
             }
 
             return (null);
@@ -145,10 +127,7 @@ namespace Kataana.Tools
                 SetHeaders(request, headersJson);
                 response = await httpClient.SendAsync(request);
 
-                if (response.IsSuccessStatusCode == true)
-                {
-                    return (await response.Content.ReadAsStringAsync());
-                }
+                return (await response.Content.ReadAsStringAsync());
             }
 
             return (null);
@@ -164,10 +143,7 @@ namespace Kataana.Tools
                 SetHeaders(request, headersJson);
                 response = await httpClient.SendAsync(request);
 
-                if (response.IsSuccessStatusCode == true)
-                {
-                    return (await response.Content.ReadAsStringAsync());
-                }
+                return (await response.Content.ReadAsStringAsync());
             }
 
             return (null);

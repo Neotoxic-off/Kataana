@@ -8,10 +8,6 @@
       xmlns:vm="clr-namespace:Kataana.ViewModels"
       d:DesignHeight="500" d:DesignWidth="350">
 
-    <UserControl.DataContext>
-        <vm:HomeViewModel/>
-    </UserControl.DataContext>
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
@@ -37,8 +33,8 @@
             </StackPanel>
 
             <StackPanel Grid.Row="2" Orientation="Horizontal">
-                <ToggleButton Height="20" IsChecked="{Binding ProxyViewModel.OptionsViewModel.OptionsModel.CustomMarket}"/>
-                <Label Margin="10,0,0,0" Content="Custom market" VerticalAlignment="Center" Foreground="White"/>
+                <ToggleButton Height="20" IsChecked="{Binding ProxyViewModel.OptionsViewModel.OptionsModel.UnlockMarket}"/>
+                <Label Margin="10,0,0,0" Content="Unlock market" VerticalAlignment="Center" Foreground="White"/>
             </StackPanel>
         </Grid>
 

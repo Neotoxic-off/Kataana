@@ -19,10 +19,10 @@ namespace Kataana.ViewModels
 
         public NavigationViewModel()
         {
-            HomeView = new HomeView();
             AccountView = new AccountView();
             MarketView = new MarketView();
             SettingsView = new SettingsView();
+            HomeView = new HomeView(AccountView, MarketView);
 
             NavigationModel = new NavigationModel()
             {

@@ -12,10 +12,27 @@ namespace Kataana.ViewModels
     public class HomeViewModel : BaseViewModel
     {
         public ProxyViewModel ProxyViewModel { get; set; }
-        
-        public HomeViewModel()
+
+        private AccountViewModel _accountViewModel;
+        public AccountViewModel AccountViewModel
         {
-            ProxyViewModel = new ProxyViewModel();
+            get { return _accountViewModel; }
+            set { SetProperty(ref _accountViewModel, value); }
+        }
+
+        private MarketViewModel _marketViewModel;
+        public MarketViewModel MarketViewModel
+        {
+            get { return _marketViewModel; }
+            set { SetProperty(ref _marketViewModel, value); }
+        }
+
+        public HomeViewModel(UserControl accountViewModel, UserControl marketViewModel)
+        {
+            AccountViewModel = (AccountViewModel)accountViewModel.DataContext;
+            MarketViewModel = (MarketViewModel)marketViewModel.DataContext;
+
+            ProxyViewModel = new ProxyViewModel(AccountViewModel, MarketViewModel);
         }
     }
 }

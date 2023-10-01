@@ -18,11 +18,11 @@ namespace Kataana.Models
             set { SetProperty(ref _autoRun, value); }
         }
 
-        private bool _customMarket;
-        public bool CustomMarket
+        private bool _unlockMarket;
+        public bool UnlockMarket
         {
-            get { return _customMarket; }
-            set { SetProperty(ref _customMarket, value); }
+            get { return _unlockMarket; }
+            set { SetProperty(ref _unlockMarket, value); }
         }
     }
 }
