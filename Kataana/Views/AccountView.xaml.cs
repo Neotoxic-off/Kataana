@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kataana.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,13 @@ namespace Kataana.Views
     /// </summary>
     public partial class AccountView : UserControl
     {
-        public AccountView()
+        public AccountViewModel AccountViewModel { get; set; }
+
+        public AccountView(UserControl settingsView)
         {
             InitializeComponent();
+
+            DataContext = new AccountViewModel(settingsView);
         }
     }
 }

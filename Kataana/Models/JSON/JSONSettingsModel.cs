@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Kataana.Models.JSON.JSONSettingsModel;
 
 namespace Kataana.Models.JSON
 {
-    public class JSONSettingsModel: BaseModel
+    public class JSONSettingsModel : BaseModel
     {
         private string _marketFlux;
         public string MarketFlux
@@ -55,6 +56,44 @@ namespace Kataana.Models.JSON
         {
             get { return _getallFlux; }
             set { SetProperty(ref _getallFlux, value); }
+        }
+
+        private _BloodWeb _bloodWeb;
+        public _BloodWeb BloodWeb
+        {
+            get { return _bloodWeb; }
+            set { SetProperty(ref _bloodWeb, value); }
+        }
+
+        public class _BloodWeb : BaseModel
+        {
+            private int _prestigeLevel;
+            public int PrestigeLevel
+            {
+                get { return _prestigeLevel; }
+                set { SetProperty(ref _prestigeLevel, value); }
+            }
+
+            private int _itemQuantity;
+            public int ItemQuantity
+            {
+                get { return _itemQuantity; }
+                set { SetProperty(ref _itemQuantity, value); }
+            }
+
+            private int _legacyPrestigeLevel;
+            public int LegacyPrestigeLevel
+            {
+                get { return _legacyPrestigeLevel; }
+                set { SetProperty(ref _legacyPrestigeLevel, value); }
+            }
+
+            private int _bloodWebLevel;
+            public int BloodWebLevel
+            {
+                get { return _bloodWebLevel; }
+                set { SetProperty(ref _bloodWebLevel, value); }
+            }
         }
     }
 }

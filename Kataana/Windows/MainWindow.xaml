@@ -42,7 +42,7 @@
 
             <Label Grid.Column="1" Content="{Binding AssemblyViewModel.Assembly.Name}" Foreground="White" FontWeight="DemiBold" FontSize="15" VerticalAlignment="Center"/>
             <Label Grid.Column="2" Content="{Binding AssemblyViewModel.Assembly.Version}" Foreground="DarkGray" FontWeight="DemiBold" FontSize="10" VerticalAlignment="Center"/>
-            <Label Grid.Column="3" Content="DEV / NOT FOR SALE" Foreground="DarkGray" FontWeight="DemiBold" FontSize="10" VerticalAlignment="Center"/>
+            <!--<Label Grid.Column="3" Content="DEV / NOT FOR SALE" Foreground="DarkGray" FontWeight="DemiBold" FontSize="10" VerticalAlignment="Center"/>-->
 
             <Button Grid.Column="4" Style="{StaticResource InvisibleButton}" Command="{Binding MinimizeCommand}">
                 <Path Data="{StaticResource MinimizeWindow}" Fill="White"/>
@@ -60,17 +60,13 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="1"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="1"/>
-                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <Button Grid.Column="0" Style="{StaticResource LabelButton}" Content="Home" Command="{Binding NavigateCommand}" CommandParameter="Home"/>
             <Grid Grid.Column="1" Background="Black"/>
             <Button Grid.Column="2" Style="{StaticResource LabelButton}" Content="Account" Command="{Binding NavigateCommand}" CommandParameter="Account"/>
             <Grid Grid.Column="3" Background="Black"/>
-            <Button Grid.Column="4" Style="{StaticResource LabelButton}" Content="Market" Command="{Binding NavigateCommand}" CommandParameter="Market"/>
-            <Grid Grid.Column="5" Background="Black"/>
-            <Button Grid.Column="6" Style="{StaticResource LabelButton}" Content="Settings" Command="{Binding NavigateCommand}" CommandParameter="Settings"/>
+            <Button Grid.Column="4" Style="{StaticResource LabelButton}" Content="Settings" Command="{Binding NavigateCommand}" CommandParameter="Settings"/>
         </Grid>
 
         <Grid Grid.Row="4" Background="{StaticResource Body}">

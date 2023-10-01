@@ -38,6 +38,9 @@
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Assets\Images\unnamed.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="BouncyCastle.Crypto, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
       <HintPath>..\packages\Portable.BouncyCastle.1.9.0\lib\net40\BouncyCastle.Crypto.dll</HintPath>
@@ -132,6 +135,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\AccountModel.cs" />
     <Compile Include="Models\GetAllModel.cs" />
     <Compile Include="Models\JSON\JSONBloodwebModel.cs" />
     <Compile Include="Models\JSON\JSONMarketModel.cs" />
@@ -204,10 +208,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\Images\genshin.jpg" />
+    <Resource Include="Assets\Images\unnamed.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\Images\macos.jpg" />
+    <Resource Include="Assets\Images\unnamed.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

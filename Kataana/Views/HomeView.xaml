@@ -5,36 +5,29 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Kataana.Views"
       mc:Ignorable="d"
-      xmlns:vm="clr-namespace:Kataana.ViewModels"
       d:DesignHeight="500" d:DesignWidth="350">
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="150"/>
+            <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="30"/>
-                <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0" Orientation="Horizontal">
-                <ToggleButton Height="20" IsChecked="{Binding ProxyViewModel.OptionsViewModel.OptionsModel.AutoRun}"/>
-                <Label Margin="10,0,0,0" Content="Autorun" VerticalAlignment="Center" Foreground="White"/>
-            </StackPanel>
-
-            <StackPanel Grid.Row="1" Orientation="Horizontal">
                 <ToggleButton Height="20" IsChecked="{Binding ProxyViewModel.OptionsViewModel.OptionsModel.TemporaryUnlock}"/>
                 <Label Margin="10,0,0,0" Content="Temporary unlock" VerticalAlignment="Center" Foreground="White"/>
             </StackPanel>
 
-            <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <StackPanel Grid.Row="1" Orientation="Horizontal">
                 <ToggleButton Height="20" IsChecked="{Binding ProxyViewModel.OptionsViewModel.OptionsModel.UnlockMarket}"/>
-                <Label Margin="10,0,0,0" Content="Unlock market" VerticalAlignment="Center" Foreground="White"/>
+                <Label Margin="10,0,0,0" Content="Unlock all" VerticalAlignment="Center" Foreground="White"/>
             </StackPanel>
         </Grid>
 

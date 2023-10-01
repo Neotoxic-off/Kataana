@@ -27,12 +27,20 @@ namespace Kataana.ViewModels
             set { SetProperty(ref _marketViewModel, value); }
         }
 
-        public HomeViewModel(UserControl accountViewModel, UserControl marketViewModel)
+        private SettingsViewModel _settingsViewModel;
+        public SettingsViewModel SettingsViewModel
+        {
+            get { return _settingsViewModel; }
+            set { SetProperty(ref _settingsViewModel, value); }
+        }
+
+        public HomeViewModel(UserControl accountViewModel, UserControl marketViewModel, UserControl settingsViewModel)
         {
             AccountViewModel = (AccountViewModel)accountViewModel.DataContext;
             MarketViewModel = (MarketViewModel)marketViewModel.DataContext;
+            SettingsViewModel = (SettingsViewModel)settingsViewModel.DataContext;
 
-            ProxyViewModel = new ProxyViewModel(AccountViewModel, MarketViewModel);
+            ProxyViewModel = new ProxyViewModel(AccountViewModel, MarketViewModel, SettingsViewModel);
         }
     }
 }

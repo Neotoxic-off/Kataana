@@ -20,6 +20,7 @@ using System.Windows.Media;
 using System.Net.Http;
 using System.Collections.ObjectModel;
 using Newtonsoft.Json;
+using System.Xml.Linq;
 
 namespace Kataana.ViewModels
 {
@@ -40,6 +41,13 @@ namespace Kataana.ViewModels
             get { return _marketViewModel; }
             set { SetProperty(ref _marketViewModel, value); }
         }
+
+        private SettingsViewModel _settingsViewModel;
+        public SettingsViewModel SettingsViewModel
+        {
+            get { return _settingsViewModel; }
+            set { SetProperty(ref _settingsViewModel, value); }
+        }
         public BloodwebViewModel BloodwebViewModel { get; set; }
         public GetAllViewModel GetAllViewModel { get; set; }
         public OptionsViewModel OptionsViewModel { get; set; }
@@ -48,7 +56,7 @@ namespace Kataana.ViewModels
         private Dictionary<string, Func<SessionEventArgs, SessionEventArgs>> Corrupters { get; set; }
         public DelegateCommand ChangeStateProxyCommand { get; set; }
 
-        public ProxyViewModel(AccountViewModel accountViewModel, MarketViewModel marketViewModel)
+        public ProxyViewModel(AccountViewModel accountViewModel, MarketViewModel marketViewModel, SettingsViewModel settingsViewModel)
         {
             ProxyModel = new ProxyModel()
             {
@@ -58,6 +66,7 @@ namespace Kataana.ViewModels
             };
             AccountViewModel = accountViewModel;
             MarketViewModel = marketViewModel;
+            SettingsViewModel = settingsViewModel;
             BloodwebViewModel = new BloodwebViewModel();
             GetAllViewModel = new GetAllViewModel();
             OptionsViewModel = new OptionsViewModel();
@@ -195,6 +204,14 @@ namespace Kataana.ViewModels
 
             if (OptionsViewModel.OptionsModel.TemporaryUnlock == true)
             {
+                BloodwebViewModel.BloodwebModel.JSONBloodwebModel.bloodWebLevel = SettingsViewModel.SettingsModel.JSONSettings.BloodWeb.BloodWebLevel;
+                BloodwebViewModel.BloodwebModel.JSONBloodwebModel.legacyPrestigeLevel = SettingsViewModel.SettingsModel.JSONSettings.BloodWeb.LegacyPrestigeLevel;
+                BloodwebViewModel.BloodwebModel.JSONBloodwebModel.prestigeLevel = SettingsViewModel.SettingsModel.JSONSettings.BloodWeb.PrestigeLevel;
+                foreach (Models.JSON.JSONBloodwebModel.Characteritem character in BloodwebViewModel.BloodwebModel.JSONBloodwebModel.characterItems)
+                {
+                    character.quantity = SettingsViewModel.SettingsModel.JSONSettings.BloodWeb.ItemQuantity;
+                }
+
                 modifiedResponseBody = JsonConvert.SerializeObject(
                     BloodwebViewModel.BloodwebModel.JSONBloodwebModel
                 );
@@ -211,6 +228,17 @@ namespace Kataana.ViewModels
 
             if (OptionsViewModel.OptionsModel.TemporaryUnlock == true)
             {
+                foreach (Models.JSON.JSONGetAllModel.List element in GetAllViewModel.GetAllModel.JSONGetAllModel.list)
+                {
+                    element.bloodWebLevel = SettingsViewModel.SettingsModel.JSONSettings.BloodWeb.BloodWebLevel;
+                    element.legacyPrestigeLevel = SettingsViewModel.SettingsModel.JSONSettings.BloodWeb.LegacyPrestigeLevel;
+                    element.prestigeLevel = SettingsViewModel.SettingsModel.JSONSettings.BloodWeb.PrestigeLevel;
+                    foreach (Models.JSON.JSONGetAllModel.Characteritem item in element.characterItems)
+                    {
+                        item.quantity = SettingsViewModel.SettingsModel.JSONSettings.BloodWeb.ItemQuantity;
+                    }
+                }
+                
                 modifiedResponseBody = JsonConvert.SerializeObject(
                     GetAllViewModel.GetAllModel.JSONGetAllModel
                 );

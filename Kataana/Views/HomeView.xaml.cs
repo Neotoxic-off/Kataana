@@ -24,11 +24,11 @@ namespace Kataana.Views
     {
         public HomeViewModel HomeViewModel { get; set; }
 
-        public HomeView(UserControl accountViewModel, UserControl marketViewModel)
+        public HomeView(UserControl accountView, UserControl marketView, UserControl settingsView)
         {
             InitializeComponent();
 
-            DataContext = new HomeViewModel(accountViewModel, marketViewModel);
+            DataContext = new HomeViewModel(accountView, marketView, settingsView);
         }
     }
 }

@@ -4,15 +4,64 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Kataana.Views"
-      xmlns:vm="clr-namespace:Kataana.ViewModels"
       mc:Ignorable="d" 
       d:DesignHeight="500" d:DesignWidth="350">
 
-    <UserControl.DataContext>
-        <vm:AccountViewModel/>
-    </UserControl.DataContext>
-
     <Grid>
-        <Label Content="ACCOUNT" Foreground="Red"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="100"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="15,0,15,0" VerticalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0" Content="Account:" Foreground="White" FontWeight="DemiBold" FontSize="15"/>
+            <StackPanel Grid.Row="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Margin="10,0,0,0" Grid.Row="0" Grid.Column="0" Content="Prestige Level" Foreground="White"/>
+                    <TextBox Margin="20,0,0,0" Grid.Row="0" Grid.Column="1" Text="{Binding SettingsViewModel.SettingsModel.JSONSettings.BloodWeb.PrestigeLevel, Mode=TwoWay}" Foreground="{StaticResource Purple}" Background="Transparent"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Margin="10,0,0,0" Grid.Row="0" Grid.Column="0" Content="Item Quantity" Foreground="White"/>
+                    <TextBox Margin="20,0,0,0" Grid.Row="0" Grid.Column="1" Text="{Binding SettingsViewModel.SettingsModel.JSONSettings.BloodWeb.ItemQuantity, Mode=TwoWay}" Foreground="{StaticResource Purple}" Background="Transparent"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Margin="10,0,0,0" Grid.Row="0" Grid.Column="0" Content="Legacy Prestige Level" Foreground="White"/>
+                    <TextBox Margin="20,0,0,0" Grid.Row="0" Grid.Column="1" Text="{Binding SettingsViewModel.SettingsModel.JSONSettings.BloodWeb.LegacyPrestigeLevel, Mode=TwoWay}" Foreground="{StaticResource Purple}" Background="Transparent"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Margin="10,0,0,0" Grid.Row="0" Grid.Column="0" Content="BloodWeb Level" Foreground="White"/>
+                    <TextBox Margin="20,0,0,0" Grid.Row="0" Grid.Column="1" Text="{Binding SettingsViewModel.SettingsModel.JSONSettings.BloodWeb.BloodWebLevel, Mode=TwoWay}" Foreground="{StaticResource Purple}" Background="Transparent"/>
+                </Grid>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1" VerticalAlignment="Center">
+            <Button Style="{StaticResource FullButton}" Content="Save" Command="{Binding SaveAccountCommand}"/>
+        </Grid>
     </Grid>
 </UserControl>
