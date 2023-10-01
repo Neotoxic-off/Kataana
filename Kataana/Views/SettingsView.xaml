@@ -14,44 +14,110 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="1"/>
             <RowDefinition Height="150"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
-            <Label Content="Author: neo &amp; shy" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        </Grid>
+        <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Hidden">
+            <Grid Margin="5,0,5,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-        <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+                <Label Grid.Row="0" Content="Flux:" Foreground="White" FontWeight="DemiBold" FontSize="15"/>
+                <StackPanel Grid.Row="1">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
 
-            <StackPanel Grid.Row="0" Orientation="Horizontal">
-                <Label Content="Market file:" Foreground="White"/>
-                <TextBox Margin="13,0,0,0" Text="{Binding SettingsModel.JSONSettings.MarketFile, Mode=TwoWay}" Foreground="{StaticResource Purple}" Background="Transparent" Width="150"/>
-            </StackPanel>
+                        <Label Grid.Row="0" Grid.Column="0" Content="Market" Foreground="White"/>
+                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SettingsModel.JSONSettings.MarketFlux, Mode=TwoWay}" Foreground="{StaticResource Purple}" Background="Transparent"/>
+                    </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
 
-            <StackPanel Grid.Row="1" Orientation="Horizontal">
-                <Label Content="Market flux:" Foreground="White"/>
-                <TextBox Margin="10,0,0,0" Text="{Binding SettingsModel.JSONSettings.MarketFlux, Mode=TwoWay}" Foreground="{StaticResource Purple}" Background="Transparent" Width="150"/>
-            </StackPanel>
+                        <Label Grid.Row="0" Grid.Column="0" Content="Bloodweb" Foreground="White"/>
+                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SettingsModel.JSONSettings.BloodwebFlux, Mode=TwoWay}" Foreground="{StaticResource Purple}" Background="Transparent"/>
+                    </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
 
-            <StackPanel Grid.Row="2" Orientation="Horizontal">
-                <Label Content="Assembly name:" Foreground="White"/>
-                <Label Margin="19,0,0,0" Content="{Binding SettingsModel.Assembly.Name}" Foreground="{StaticResource Purple}" Background="Transparent" Width="150"/>
-            </StackPanel>
+                        <Label Grid.Row="0" Grid.Column="0" Content="Get all" Foreground="White"/>
+                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SettingsModel.JSONSettings.GetAllFlux, Mode=TwoWay}" Foreground="{StaticResource Purple}" Background="Transparent"/>
+                    </Grid>
+                </StackPanel>
 
-            <StackPanel Grid.Row="3" Orientation="Horizontal">
-                <Label Content="Assembly version:" Foreground="White"/>
-                <Label Margin="10,0,0,0" Content="{Binding SettingsModel.Assembly.Version}" Foreground="{StaticResource Purple}" Background="Transparent" Width="150"/>
-            </StackPanel>
-        </Grid>
+                <Label Grid.Row="2" Content="Files:" Foreground="White" FontWeight="DemiBold" FontSize="15"/>
+                <StackPanel Grid.Row="3">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
 
+                        <Label Grid.Row="0" Grid.Column="0" Content="Market" Foreground="White"/>
+                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SettingsModel.JSONSettings.MarketFile, Mode=TwoWay}" Foreground="{StaticResource Purple}" Background="Transparent"/>
+                    </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Row="0" Grid.Column="0" Content="Bloodweb" Foreground="White"/>
+                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SettingsModel.JSONSettings.BloodwebFile, Mode=TwoWay}" Foreground="{StaticResource Purple}" Background="Transparent"/>
+                    </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Row="0" Grid.Column="0" Content="Get all" Foreground="White"/>
+                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SettingsModel.JSONSettings.GetAllFile, Mode=TwoWay}" Foreground="{StaticResource Purple}" Background="Transparent"/>
+                    </Grid>
+                </StackPanel>
+
+                <Label Grid.Row="4" Content="Assembly:" Foreground="White" FontWeight="DemiBold" FontSize="15"/>
+                <StackPanel Grid.Row="5">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Row="0" Grid.Column="0" Content="Name" Foreground="White"/>
+                        <Label Grid.Row="0" Grid.Column="1" Content="{Binding SettingsModel.Assembly.Name}" Foreground="{StaticResource Purple}" Background="Transparent"/>
+                    </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Row="0" Grid.Column="0" Content="Version" Foreground="White"/>
+                        <Label Grid.Row="0" Grid.Column="1" Content="{Binding SettingsModel.Assembly.Version}" Foreground="{StaticResource Purple}" Background="Transparent"/>
+                    </Grid>
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
+
+        <Grid Grid.Row="1" Background="Black"/>
+        
         <Grid Grid.Row="2" VerticalAlignment="Center">
             <Button Style="{StaticResource FullButton}" Content="Save" Command="{Binding SaveSettingsCommand}"/>
         </Grid>
