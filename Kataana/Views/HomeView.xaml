@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="Kataana.Views.HomeView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Kataana.Views"
+      mc:Ignorable="d"
+      xmlns:vm="clr-namespace:Kataana.ViewModels"
+      d:DesignHeight="500" d:DesignWidth="350">
+
+    <UserControl.DataContext>
+        <vm:HomeViewModel/>
+    </UserControl.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="150"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" Orientation="Horizontal">
+                <ToggleButton Height="20" IsChecked="{Binding ProxyViewModel.OptionsViewModel.OptionsModel.AutoRun}"/>
+                <Label Margin="10,0,0,0" Content="Autorun" VerticalAlignment="Center" Foreground="White"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                <ToggleButton Height="20" IsChecked="{Binding ProxyViewModel.OptionsViewModel.OptionsModel.TemporaryUnlock}"/>
+                <Label Margin="10,0,0,0" Content="Temporary unlock" VerticalAlignment="Center" Foreground="White"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="2" Orientation="Horizontal">
+                <ToggleButton Height="20" IsChecked="{Binding ProxyViewModel.OptionsViewModel.OptionsModel.CustomMarket}"/>
+                <Label Margin="10,0,0,0" Content="Custom market" VerticalAlignment="Center" Foreground="White"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="2" VerticalAlignment="Center">
+            <Button Style="{StaticResource FullButton}" Content="{Binding ProxyViewModel.ProxyModel.Label}" Command="{Binding ProxyViewModel.ChangeStateProxyCommand}"/>
+        </Grid>
+    </Grid>
+</UserControl>

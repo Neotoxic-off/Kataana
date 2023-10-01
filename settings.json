@@ -1,0 +1,5 @@
+{
+    "MarketFile": "market.json",
+    "VersionFlux": "https://raw.githubusercontent.com/Elevatia/Market/main/version",
+    "MarketFlux": "https://raw.githubusercontent.com/Elevatia/Market/main/market.json"
+}

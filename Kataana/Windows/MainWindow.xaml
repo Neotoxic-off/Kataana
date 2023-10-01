@@ -1,0 +1,79 @@
+﻿<Window x:Class="Kataana.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Kataana"
+        xmlns:vm="clr-namespace:Kataana.ViewModels"
+        mc:Ignorable="d"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        Background="Black"
+        Height="500" Width="350">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="0" ResizeBorderThickness="0"/>
+    </WindowChrome.WindowChrome>
+
+    <Window.DataContext>
+        <vm:MainViewModel/>
+    </Window.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="1"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="1"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Background="{StaticResource Head}" MouseLeftButtonDown="Header_MouseLeftButtonDown">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="75"/>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="40"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Column="1" Content="{Binding AssemblyViewModel.Assembly.Name}" Foreground="White" FontWeight="DemiBold" FontSize="15" VerticalAlignment="Center"/>
+            <Label Grid.Column="2" Content="{Binding AssemblyViewModel.Assembly.Version}" Foreground="DarkGray" FontWeight="DemiBold" FontSize="10" VerticalAlignment="Center"/>
+
+            <Button Grid.Column="4" Style="{StaticResource InvisibleButton}" Command="{Binding MinimizeCommand}">
+                <Path Data="{StaticResource MinimizeWindow}" Fill="White"/>
+            </Button>
+
+            <Button Grid.Column="5" Style="{StaticResource InvisibleButton}" Command="{Binding ExitCommand}">
+                <Path Data="{StaticResource CloseWindow}" Fill="White" Stretch="Fill"/>
+            </Button>
+        </Grid>
+
+        <Grid Grid.Row="2" Background="{StaticResource Bar}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="1"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="1"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="1"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Style="{StaticResource LabelButton}" Content="Home" Command="{Binding NavigateCommand}" CommandParameter="Home"/>
+            <Grid Grid.Column="1" Background="Black"/>
+            <Button Grid.Column="2" Style="{StaticResource LabelButton}" Content="Account" Command="{Binding NavigateCommand}" CommandParameter="Account"/>
+            <Grid Grid.Column="3" Background="Black"/>
+            <Button Grid.Column="4" Style="{StaticResource LabelButton}" Content="Market" Command="{Binding NavigateCommand}" CommandParameter="Market"/>
+            <Grid Grid.Column="5" Background="Black"/>
+            <Button Grid.Column="6" Style="{StaticResource LabelButton}" Content="Settings" Command="{Binding NavigateCommand}" CommandParameter="Settings"/>
+        </Grid>
+
+        <Grid Grid.Row="4" Background="{StaticResource Body}">
+            <ContentControl Content="{Binding NavigationViewModel.NavigationModel.ContentControl}"/>
+        </Grid>
+    </Grid>
+</Window>
