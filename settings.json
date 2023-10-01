@@ -5,5 +5,11 @@
     "BloodwebFile": "bloodweb.json",
     "BloodwebFlux": "https://raw.githubusercontent.com/Elevatia/Market/main/bloodweb.json",
     "GetAllFile": "getall.json",
-    "GetAllFlux": "https://raw.githubusercontent.com/Elevatia/Market/main/getall.json"
+    "GetAllFlux": "https://raw.githubusercontent.com/Elevatia/Market/main/getall.json",
+    "BloodWeb": {
+        "BloodWebLevel": 50,
+        "LegacyPrestigeLevel": 3,
+        "PrestigeLevel": 100,
+        "ItemQuantity": 3
+    }
 }
