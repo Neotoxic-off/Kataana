@@ -25,6 +25,6 @@ jobs:
       run: dotnet restore Kataana.sln
 
     - name: Build project
-      run: dotnet build Kataana.sln --configuration Release
+      run: dotnet build Kataana.sln --configuration Release --architecture x64
       
     # You can add additional steps here, such as deploying the application or publishing artifacts.
