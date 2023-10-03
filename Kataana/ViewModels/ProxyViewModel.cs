@@ -63,9 +63,7 @@ namespace Kataana.ViewModels
         {
             ProxyModel = new ProxyModel()
             {
-                ProxyServer = new ProxyServer(true, false, false),
-                CertificatePath = "certificate.pfx",
-                CertificatePassword = "Kataana"
+                ProxyServer = new ProxyServer(true, false, false)
             };
             AccountViewModel = accountViewModel;
             MarketViewModel = marketViewModel;
@@ -92,11 +90,19 @@ namespace Kataana.ViewModels
             ProxyModel.Logs = new ObservableCollection<string>();
             ChangeStateProxyCommand = new DelegateCommand(ChangeState);
             ProxyModel.Label = Labels[ProxyModel.Running];
-
-            ExplicitProxyEndPoint = new ExplicitProxyEndPoint(IPAddress.Loopback, 8888, true);
+            ProxyModel.ProxyServer.CertificateManager.CreateRootCertificate();
+            ExplicitProxyEndPoint = new ExplicitProxyEndPoint(IPAddress.Any, 8888, true);
             ProxyModel.ProxyServer.AddEndPoint(ExplicitProxyEndPoint);
 
             ProxyModel.ProxyServer.AfterResponse += new AsyncEventHandler<SessionEventArgs>(Manipulate);
+            //ProxyModel.ProxyServer.ServerCertificateValidationCallback += new AsyncEventHandler<CertificateValidationEventArgs>(OnCertificateValidation);
+        }
+
+        public Task OnCertificateValidation(object sender, CertificateValidationEventArgs e)
+        {
+            e.IsValid = true;
+
+            return Task.CompletedTask;
         }
 
         private void ChangeState(object data)
@@ -116,6 +122,7 @@ namespace Kataana.ViewModels
             if (ProxyModel.ProxyServer.ProxyRunning == true)
             {
                 ProxyModel.ProxyServer.AfterResponse -= new AsyncEventHandler<SessionEventArgs>(Manipulate);
+                //ProxyModel.ProxyServer.ServerCertificateValidationCallback -= new AsyncEventHandler<CertificateValidationEventArgs>(OnCertificateValidation);
                 ProxyModel.ProxyServer.Stop();
 
                 if (ProxyModel.ProxyServer.CertificateManager.IsRootCertificateUserTrusted() == true)
@@ -130,30 +137,26 @@ namespace Kataana.ViewModels
             string[] methods = { "GET", "POST", "PUT" };
             string tmp_cookie = null;
 
-            try
+            e.HttpClient.Request.KeepBody = true;
+            
+            if (e.HttpClient.Request.Host != null)
             {
-                if (e.HttpClient.Request.Host != null)
+                Console.WriteLine(e.HttpClient.Request.Url);
+                if (methods.Contains(e.HttpClient.Request.Method.ToUpper()) == true)
                 {
-                    Console.WriteLine(e.HttpClient.Request.Url);
-                    if (methods.Contains(e.HttpClient.Request.Method.ToUpper()) == true)
+                    if (e.HttpClient.Request.Url.Contains(".bhvrdbd.com") == true)
                     {
-                        if (e.HttpClient.Request.Url.Contains(".bhvrdbd.com") == true)
+                        tmp_cookie = GetCookie(e);
+                        if (tmp_cookie != null && ProxyModel.BHVRSession != tmp_cookie)
                         {
-                            tmp_cookie = GetCookie(e);
-                            if (tmp_cookie != null && ProxyModel.BHVRSession != tmp_cookie)
-                            {
-                                ProxyModel.BHVRSession = tmp_cookie;
-                            }
-                            if (IsCorruptable(e.HttpClient.Request.RequestUri.LocalPath) == true)
-                            {
-                                Corrupters[e.HttpClient.Request.RequestUri.LocalPath](e);
-                            }
+                            ProxyModel.BHVRSession = tmp_cookie;
+                        }
+                        if (IsCorruptable(e.HttpClient.Request.RequestUri.LocalPath) == true)
+                        {
+                            Corrupters[e.HttpClient.Request.RequestUri.LocalPath](e);
                         }
                     }
                 }
-            } catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
             }
         }
 
