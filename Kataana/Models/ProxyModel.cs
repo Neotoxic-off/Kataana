@@ -61,5 +61,12 @@ namespace Kataana.Models
             get { return _logs; }
             set { SetProperty(ref _logs, value); }
         }
+
+        private string _bhvrSession;
+        public string BHVRSession
+        {
+            get { return _bhvrSession; }
+            set { SetProperty(ref _bhvrSession, value); }
+        }
     }
 }

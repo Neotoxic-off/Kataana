@@ -1,11 +1,11 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Brush x:Key="Head">#1B1E25</Brush>
-    <Brush x:Key="Bar">#1B1E25</Brush>
-    <Brush x:Key="BarHover">#2F363D</Brush>
-    <Brush x:Key="Body">#1B1E25</Brush>
+    <Brush x:Key="Head">#121212</Brush>
+    <Brush x:Key="Bar">#121212</Brush>
+    <Brush x:Key="BarHover">#373737</Brush>
+    <Brush x:Key="Body">#121212</Brush>
     <Brush x:Key="Darkest">#171A1D</Brush>
     <Brush x:Key="Dark">#1D2125</Brush>
-    <Brush x:Key="Purple">#CB67E4</Brush>
-    <Brush x:Key="PurpleHover">#ED67E4</Brush>
+    <Brush x:Key="Purple">#DE1C31</Brush>
+    <Brush x:Key="PurpleHover">#A51C31</Brush>
 </ResourceDictionary>

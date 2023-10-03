@@ -119,14 +119,14 @@
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
                     <Viewbox>
                         <Border x:Name="Border" CornerRadius="10"
-                            Background="#2F363D"
+                            Background="#202020"
                             Width="40" Height="20">
                             <Border.Effect>
                                 <DropShadowEffect ShadowDepth="0.5" Direction="0" Opacity="0.3" />
                             </Border.Effect>
                             <Ellipse x:Name="Ellipse" Fill="#FFFFFFFF" Stretch="Uniform"
                                  Margin="2 1 2 1"
-                                 Stroke="Gray" StrokeThickness="0.2"
+                                 Stroke="#202020" StrokeThickness="0.2"
                                  HorizontalAlignment="Stretch">
                                 <Ellipse.Effect>
                                     <DropShadowEffect BlurRadius="10" ShadowDepth="1" Opacity="0.3" Direction="260" />
@@ -140,7 +140,7 @@
                                 <Storyboard>
                                     <ColorAnimation Storyboard.TargetName="Border"
                                         Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                        To="#CB67E4"
+                                        To="#DE1C31"
                                         Duration="0:0:0.1"/>
                                     <ThicknessAnimation Storyboard.TargetName="Ellipse"
                                         Storyboard.TargetProperty="Margin"
@@ -154,7 +154,7 @@
                                 <Storyboard>
                                     <ColorAnimation Storyboard.TargetName="Border"
                                         Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                        To="#2F363D"
+                                        To="#202020"
                                         Duration="0:0:0.1"/>
                                     <ThicknessAnimation Storyboard.TargetName="Ellipse"
                                         Storyboard.TargetProperty="Margin"

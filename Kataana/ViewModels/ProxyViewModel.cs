@@ -21,6 +21,8 @@ using System.Net.Http;
 using System.Collections.ObjectModel;
 using Newtonsoft.Json;
 using System.Xml.Linq;
+using Titanium.Web.Proxy.Network;
+using System.Diagnostics;
 
 namespace Kataana.ViewModels
 {
@@ -55,12 +57,13 @@ namespace Kataana.ViewModels
         private Dictionary<bool, string> Labels { get; set; }
         private Dictionary<string, Func<SessionEventArgs, SessionEventArgs>> Corrupters { get; set; }
         public DelegateCommand ChangeStateProxyCommand { get; set; }
+        private ExplicitProxyEndPoint ExplicitProxyEndPoint { get; set; }
 
         public ProxyViewModel(AccountViewModel accountViewModel, MarketViewModel marketViewModel, SettingsViewModel settingsViewModel)
         {
             ProxyModel = new ProxyModel()
             {
-                ProxyServer = new ProxyServer(true, true, true),
+                ProxyServer = new ProxyServer(true, false, false),
                 CertificatePath = "certificate.pfx",
                 CertificatePassword = "Kataana"
             };
@@ -87,88 +90,71 @@ namespace Kataana.ViewModels
                 { "/v1/dbd-character-data/get-all", ManipulateGetAll }
             };
             ProxyModel.Logs = new ObservableCollection<string>();
-            ProxyModel.Running = false;
             ChangeStateProxyCommand = new DelegateCommand(ChangeState);
             ProxyModel.Label = Labels[ProxyModel.Running];
 
-            ProxyModel.ProxyServer.CertificateManager.CertificateEngine = Titanium.Web.Proxy.Network.CertificateEngine.DefaultWindows;
-            ProxyModel.ProxyServer.CertificateManager.EnsureRootCertificate();
-            ProxyModel.ProxyServer.CertificateManager.TrustRootCertificate(true);
+            ExplicitProxyEndPoint = new ExplicitProxyEndPoint(IPAddress.Loopback, 8888, true);
+            ProxyModel.ProxyServer.AddEndPoint(ExplicitProxyEndPoint);
 
-            TransparentProxyEndPoint transparentEndPoint = new TransparentProxyEndPoint(IPAddress.Any, 8001, true)
-            {
-                GenericCertificateName = "google.com"
-            };
-
-            ProxyModel.ProxyServer.AddEndPoint(transparentEndPoint);
+            ProxyModel.ProxyServer.AfterResponse += new AsyncEventHandler<SessionEventArgs>(Manipulate);
         }
 
         private void ChangeState(object data)
         {
-            States[ProxyModel.Running](data);
-            ProxyModel.Running = !ProxyModel.Running;
-            ProxyModel.Label = Labels[ProxyModel.Running];
+            States[ProxyModel.ProxyServer.ProxyRunning](data);
+            ProxyModel.Label = Labels[ProxyModel.ProxyServer.ProxyRunning];
         }
 
         private void StartProxy(object data)
         {
-            ProxyModel.ProxyServer.BeforeResponse += Manipulate;
-
             ProxyModel.ProxyServer.Start();
-            ExplicitProxyEndPoint explicitEndPoint = new ExplicitProxyEndPoint(IPAddress.Any, 8000, true)
-            {
-                
-            };
-            ProxyModel.ProxyServer.AddEndPoint(
-                explicitEndPoint
-            );
-            ProxyModel.ProxyServer.SetAsSystemHttpProxy(explicitEndPoint);
-            ProxyModel.ProxyServer.SetAsSystemHttpsProxy(explicitEndPoint);
+            ProxyModel.ProxyServer.SetAsSystemProxy(ExplicitProxyEndPoint, ProxyProtocolType.AllHttp);
         }
 
         private void StopProxy(object data)
         {
-            ProxyModel.ProxyServer.BeforeResponse -= Manipulate;
-            ProxyModel.ProxyServer.Stop();
+            if (ProxyModel.ProxyServer.ProxyRunning == true)
+            {
+                ProxyModel.ProxyServer.AfterResponse -= new AsyncEventHandler<SessionEventArgs>(Manipulate);
+                ProxyModel.ProxyServer.Stop();
+
+                if (ProxyModel.ProxyServer.CertificateManager.IsRootCertificateUserTrusted() == true)
+                {
+                    ProxyModel.ProxyServer.CertificateManager.RemoveTrustedRootCertificate(false);
+                }
+            }
         }
 
         private async Task Manipulate(object sender, SessionEventArgs e)
         {
             string[] methods = { "GET", "POST", "PUT" };
+            string tmp_cookie = null;
 
-            if (methods.Contains(e.HttpClient.Request.Method.ToUpper()) == true)
+            try
             {
-                if (e.HttpClient.Request.Url.Contains("bhvrdbd") == true)
+                if (e.HttpClient.Request.Host != null)
                 {
-                    if (IsCorruptable(e.HttpClient.Request.RequestUri.LocalPath) == true)
+                    Console.WriteLine(e.HttpClient.Request.Url);
+                    if (methods.Contains(e.HttpClient.Request.Method.ToUpper()) == true)
                     {
-                        Corrupters[e.HttpClient.Request.RequestUri.LocalPath](e);
+                        if (e.HttpClient.Request.Url.Contains(".bhvrdbd.com") == true)
+                        {
+                            tmp_cookie = GetCookie(e);
+                            if (tmp_cookie != null && ProxyModel.BHVRSession != tmp_cookie)
+                            {
+                                ProxyModel.BHVRSession = tmp_cookie;
+                            }
+                            if (IsCorruptable(e.HttpClient.Request.RequestUri.LocalPath) == true)
+                            {
+                                Corrupters[e.HttpClient.Request.RequestUri.LocalPath](e);
+                            }
+                        }
                     }
                 }
+            } catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
-            
-            //if (sess.fullUrl.Contains("v1/dbd-character-data/bloodweb") == true && variables.manager.get_switch_button(switch_savefile) == true)
-            //{
-            //    string tmp = Encoding.UTF8.GetString(Properties.Resources.Bloodweb);
-            //    models.bloodweb.Rootobject bb = JsonConvert.DeserializeObject<models.bloodweb.Rootobject>(tmp);
-            //    bb.prestigeLevel = (int)variables.manager.get_numericupdown(numericUpDown1);
-            //    string data = JsonConvert.SerializeObject(bb);
-            //    sess.utilDecodeResponse();
-            //    sess.utilSetResponseBody(data);
-            //}
-            //if (sess.fullUrl.Contains("v1/dbd-character-data/get-all") == true && variables.manager.get_switch_button(switch_savefile) == true)
-            //{
-            //    string tmp = Encoding.UTF8.GetString(Properties.Resources.GetAll);
-            //    string class_data = null;
-            //    models.getall.Rootobject bb = JsonConvert.DeserializeObject<models.getall.Rootobject>(tmp);
-            //    foreach (models.getall.List data in bb.list)
-            //    {
-            //        data.prestigeLevel = (int)variables.manager.get_numericupdown(numericUpDown1);
-            //    }
-            //    class_data = JsonConvert.SerializeObject(bb);
-            //    sess.utilDecodeResponse();
-            //    sess.utilSetResponseBody(class_data);
-            //}
         }
 
         private bool IsCorruptable(string Url)
@@ -220,6 +206,21 @@ namespace Kataana.ViewModels
             }
 
             return (session);
+        }
+
+        private string GetCookie(SessionEventArgs session)
+        {
+            string token = "bhvrSession";
+
+            if (session.HttpClient.Response.Headers.Headers.Count() > 0)
+            {
+                if (session.HttpClient.Response.Headers.Headers.ContainsKey(token) == true)
+                {
+                    return (session.HttpClient.Response.Headers.Headers[token].Value);
+                }
+            }
+
+            return (null);
         }
 
         private SessionEventArgs ManipulateGetAll(SessionEventArgs session)

@@ -10,7 +10,7 @@ using System.Windows;
 [assembly: AssemblyTitle("Kataana")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("neo")]
 [assembly: AssemblyProduct("Kataana")]
 [assembly: AssemblyCopyright("Copyright ©  2023")]
 [assembly: AssemblyTrademark("")]

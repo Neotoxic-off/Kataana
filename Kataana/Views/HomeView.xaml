@@ -10,6 +10,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
+            <RowDefinition Height="3*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
@@ -31,7 +32,21 @@
             </StackPanel>
         </Grid>
 
-        <Grid Grid.Row="2" VerticalAlignment="Center">
+        <Grid Grid.Row="2" VerticalAlignment="Center" Margin="30,0,30,0">
+            <StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="4*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0" Content="Cookie:" Foreground="White"/>
+                    <TextBox Margin="20,0,0,0" Grid.Column="1" IsReadOnly="True" Text="{Binding ProxyViewModel.ProxyModel.BHVRSession}" Background="Transparent" Foreground="{StaticResource Purple}"/>
+                </Grid>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="3" VerticalAlignment="Center">
             <Button Style="{StaticResource FullButton}" Content="{Binding ProxyViewModel.ProxyModel.Label}" Command="{Binding ProxyViewModel.ChangeStateProxyCommand}"/>
         </Grid>
     </Grid>

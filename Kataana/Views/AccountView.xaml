@@ -36,8 +36,8 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Label Margin="10,0,0,0" Grid.Row="0" Grid.Column="0" Content="Item Quantity" Foreground="White"/>
-                    <TextBox Margin="20,0,0,0" Grid.Row="0" Grid.Column="1" Text="{Binding SettingsViewModel.SettingsModel.JSONSettings.BloodWeb.ItemQuantity, Mode=TwoWay}" Foreground="{StaticResource Purple}" Background="Transparent"/>
+                    <Label Margin="10,0,0,0" Grid.Column="0" Content="Item Quantity" Foreground="White"/>
+                    <TextBox Margin="20,0,0,0" Grid.Column="1" Text="{Binding SettingsViewModel.SettingsModel.JSONSettings.BloodWeb.ItemQuantity, Mode=TwoWay}" Foreground="{StaticResource Purple}" Background="Transparent"/>
                 </Grid>
                 <Grid>
                     <Grid.ColumnDefinitions>
