@@ -23,12 +23,12 @@
 
             <StackPanel Grid.Row="0" Orientation="Horizontal">
                 <ToggleButton Height="20" IsChecked="{Binding ProxyViewModel.OptionsViewModel.OptionsModel.TemporaryUnlock}"/>
-                <Label Margin="10,0,0,0" Content="Temporary unlock" VerticalAlignment="Center" Foreground="White"/>
+                <Label Margin="10,0,0,0" Content="Infinite items" VerticalAlignment="Center" Foreground="White"/>
             </StackPanel>
 
             <StackPanel Grid.Row="1" Orientation="Horizontal">
                 <ToggleButton Height="20" IsChecked="{Binding ProxyViewModel.OptionsViewModel.OptionsModel.UnlockMarket}"/>
-                <Label Margin="10,0,0,0" Content="Unlock all" VerticalAlignment="Center" Foreground="White"/>
+                <Label Margin="10,0,0,0" Content="Unlock characters &amp; skins" VerticalAlignment="Center" Foreground="White"/>
             </StackPanel>
         </Grid>
 

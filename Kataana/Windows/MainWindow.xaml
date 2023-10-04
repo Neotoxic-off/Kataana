@@ -42,7 +42,7 @@
 
             <Label Grid.Column="1" Content="{Binding AssemblyViewModel.Assembly.Name}" Foreground="White" FontWeight="DemiBold" FontSize="15" VerticalAlignment="Center"/>
             <Label Grid.Column="2" Content="{Binding AssemblyViewModel.Assembly.Version}" Foreground="DarkGray" FontWeight="DemiBold" FontSize="10" VerticalAlignment="Center"/>
-            <Label Grid.Column="3" Content="DEV version" Foreground="Red" FontWeight="DemiBold" FontSize="10" VerticalAlignment="Center"/>
+            <!--<Label Grid.Column="3" Content="DEV version" Foreground="Red" FontWeight="DemiBold" FontSize="10" VerticalAlignment="Center"/>-->
 
             <Button Grid.Column="4" Style="{StaticResource InvisibleButton}" Command="{Binding MinimizeCommand}">
                 <Path Data="{StaticResource MinimizeWindow}" Fill="White"/>
