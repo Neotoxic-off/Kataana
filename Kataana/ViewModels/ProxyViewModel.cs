@@ -3,15 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using Titanium.Web.Proxy;
-using Titanium.Web.Proxy.EventArguments;
-using Titanium.Web.Proxy.Http;
-using Titanium.Web.Proxy.Models;
 using System.IO;
 using System.Runtime.ConstrainedExecution;
 using Kataana.Properties;
@@ -23,6 +18,8 @@ using Newtonsoft.Json;
 using System.Xml.Linq;
 using Titanium.Web.Proxy.Network;
 using System.Diagnostics;
+
+using Fiddler;
 
 namespace Kataana.ViewModels
 {
@@ -90,19 +87,6 @@ namespace Kataana.ViewModels
             ProxyModel.Logs = new ObservableCollection<string>();
             ChangeStateProxyCommand = new DelegateCommand(ChangeState);
             ProxyModel.Label = Labels[ProxyModel.Running];
-            ProxyModel.ProxyServer.CertificateManager.CreateRootCertificate();
-            ExplicitProxyEndPoint = new ExplicitProxyEndPoint(IPAddress.Any, 8888, true);
-            ProxyModel.ProxyServer.AddEndPoint(ExplicitProxyEndPoint);
-
-            ProxyModel.ProxyServer.AfterResponse += new AsyncEventHandler<SessionEventArgs>(Manipulate);
-            //ProxyModel.ProxyServer.ServerCertificateValidationCallback += new AsyncEventHandler<CertificateValidationEventArgs>(OnCertificateValidation);
-        }
-
-        public Task OnCertificateValidation(object sender, CertificateValidationEventArgs e)
-        {
-            e.IsValid = true;
-
-            return Task.CompletedTask;
         }
 
         private void ChangeState(object data)
@@ -113,23 +97,59 @@ namespace Kataana.ViewModels
 
         private void StartProxy(object data)
         {
-            ProxyModel.ProxyServer.Start();
-            ProxyModel.ProxyServer.SetAsSystemProxy(ExplicitProxyEndPoint, ProxyProtocolType.AllHttp);
+            FiddlerCoreStartupSettings startupSettings = new FiddlerCoreStartupSettingsBuilder()
+                .RegisterAsSystemProxy()
+                .DecryptSSL()
+                .Build();
+                
+            if (FiddlerApplication.IsStarted() == false)
+            {
+                ProxyModel.ProxyServer.Startup(startupSettings);
+            }
+
+            ProxyModel.ProxyServer.BeforeResponse += Manipulate;
+
         }
 
         private void StopProxy(object data)
         {
-            if (ProxyModel.ProxyServer.ProxyRunning == true)
-            {
-                ProxyModel.ProxyServer.AfterResponse -= new AsyncEventHandler<SessionEventArgs>(Manipulate);
-                //ProxyModel.ProxyServer.ServerCertificateValidationCallback -= new AsyncEventHandler<CertificateValidationEventArgs>(OnCertificateValidation);
-                ProxyModel.ProxyServer.Stop();
+            ProxyModel.ProxyServer.BeforeResponse -= Manipulate;
 
-                if (ProxyModel.ProxyServer.CertificateManager.IsRootCertificateUserTrusted() == true)
+            if (ProxyModel.ProxyServer.IsStarted())
+                ProxyModel.ProxyServer.Shutdown();
+                UninstallCertificate();
+            }
+        }
+
+        private bool InstallCertificate()
+        {
+            if (CertMaker.rootCertExists() == false)
+            {
+                if (CertMaker.createRootCert() == false)
                 {
-                    ProxyModel.ProxyServer.CertificateManager.RemoveTrustedRootCertificate(false);
+                    return (false);
+                }
+
+                if (CertMaker.trustRootCert() == false)
+                {
+                    return (false);
                 }
             }
+
+            return (true);
+        }
+
+        private bool UninstallCertificate()
+        {
+            if (CertMaker.rootCertExists() == true)
+            {
+                if (CertMaker.removeFiddlerGeneratedCerts(true) == false)
+                {
+                    return (false);
+                }
+            }
+
+            return (true);
         }
 
         private async Task Manipulate(object sender, SessionEventArgs e)
