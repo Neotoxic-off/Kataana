@@ -103,12 +103,13 @@ namespace Kataana.ViewModels
                 FiddlerApplication.Startup(startupSettings);
             }
 
+            FiddlerApplication.BeforeRequest += BeforeRequest;
             FiddlerApplication.BeforeResponse += Manipulate;
-
         }
 
         private void StopProxy(object data)
         {
+            FiddlerApplication.BeforeRequest -= BeforeRequest;
             FiddlerApplication.BeforeResponse -= Manipulate;
 
             if (FiddlerApplication.IsStarted() == true)
@@ -149,24 +150,22 @@ namespace Kataana.ViewModels
             return (true);
         }
 
-        private async void Manipulate(Session e)
+        private void BeforeRequest(Session e)
         {
-            string tmp_cookie = null;
+            e.bBufferResponse = true;
+        }
 
+        private void Manipulate(Session e)
+        {
             if (e.oRequest.host != null)
             {
                 if (e.fullUrl.Contains(".bhvrdbd.com") == true)
                 {
-                    Console.WriteLine(e.PathAndQuery);
-                    e.bBufferResponse = true;
-                    tmp_cookie = GetCookie(e);
-                    if (tmp_cookie != null && ProxyModel.BHVRSession != tmp_cookie)
-                    {
-                        ProxyModel.BHVRSession = tmp_cookie;
-                    }
+                    Cookie(e);
                     if (IsCorruptable(e.PathAndQuery) == true)
                     {
-                        e = Corrupters[e.PathAndQuery](e);
+                        e.bBufferResponse = true;
+                        Corrupters[e.PathAndQuery](e);
                     }
                 }
             }
@@ -176,7 +175,7 @@ namespace Kataana.ViewModels
         {
             foreach (KeyValuePair<string, Func<Session, Session>> data in Corrupters)
             {
-                if (Url.Contains(data.Key) == true)
+                if (Url == data.Key)
                 {
                     return (true);
                 }
@@ -191,7 +190,9 @@ namespace Kataana.ViewModels
 
             if (OptionsViewModel.OptionsModel.UnlockMarket == true)
             {
-                modifiedResponseBody = Newtonsoft.Json.JsonConvert.SerializeObject(
+                session.bBufferResponse = true;
+                session.utilDecodeResponse();
+                modifiedResponseBody = JsonConvert.SerializeObject(
                     MarketViewModel.MarketModel.JSONMarketModel
                 );
                 session.utilSetResponseBody(modifiedResponseBody);
@@ -206,6 +207,9 @@ namespace Kataana.ViewModels
 
             if (OptionsViewModel.OptionsModel.TemporaryUnlock == true)
             {
+                session.bBufferResponse = true;
+                session.utilDecodeResponse();
+
                 BloodwebViewModel.BloodwebModel.JSONBloodwebModel.bloodWebLevel = SettingsViewModel.SettingsModel.JSONSettings.BloodWeb.BloodWebLevel;
                 BloodwebViewModel.BloodwebModel.JSONBloodwebModel.legacyPrestigeLevel = SettingsViewModel.SettingsModel.JSONSettings.BloodWeb.LegacyPrestigeLevel;
                 BloodwebViewModel.BloodwebModel.JSONBloodwebModel.prestigeLevel = SettingsViewModel.SettingsModel.JSONSettings.BloodWeb.PrestigeLevel;
@@ -223,16 +227,14 @@ namespace Kataana.ViewModels
             return (session);
         }
 
-        private string GetCookie(Session session)
+        private void Cookie(Session session)
         {
             string token = "bhvrSession=";
 
             if (session.RequestHeaders.ToString().Contains(token) == true)
             {
-                return (session.RequestHeaders["Cookie"].ToString().Replace(token, String.Empty));
+                ProxyModel.BHVRSession = session.RequestHeaders["Cookie"].ToString().Replace(token, String.Empty);
             }
-
-            return (null);
         }
 
         private Session ManipulateGetAll(Session session)
@@ -241,6 +243,8 @@ namespace Kataana.ViewModels
 
             if (OptionsViewModel.OptionsModel.TemporaryUnlock == true)
             {
+                session.bBufferResponse = true;
+                session.utilDecodeResponse();
                 foreach (Models.JSON.JSONGetAllModel.List element in GetAllViewModel.GetAllModel.JSONGetAllModel.list)
                 {
                     element.bloodWebLevel = SettingsViewModel.SettingsModel.JSONSettings.BloodWeb.BloodWebLevel;

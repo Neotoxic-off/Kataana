@@ -24,38 +24,38 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="1.5*"/>
                     </Grid.ColumnDefinitions>
 
                     <Label Margin="10,0,0,0" Grid.Row="0" Grid.Column="0" Content="Prestige Level" Foreground="White"/>
-                    <TextBox Margin="20,0,0,0" Grid.Row="0" Grid.Column="1" Text="{Binding SettingsViewModel.SettingsModel.JSONSettings.BloodWeb.PrestigeLevel, Mode=TwoWay}" Foreground="{StaticResource Purple}" Background="Transparent"/>
+                    <TextBox Style="{StaticResource ModernBox}" Margin="20,0,0,0" Grid.Row="0" Grid.Column="1" Text="{Binding SettingsViewModel.SettingsModel.JSONSettings.BloodWeb.PrestigeLevel, Mode=TwoWay}" Foreground="{StaticResource Purple}" Background="Transparent"/>
                 </Grid>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="1.5*"/>
                     </Grid.ColumnDefinitions>
 
                     <Label Margin="10,0,0,0" Grid.Column="0" Content="Item Quantity" Foreground="White"/>
-                    <TextBox Margin="20,0,0,0" Grid.Column="1" Text="{Binding SettingsViewModel.SettingsModel.JSONSettings.BloodWeb.ItemQuantity, Mode=TwoWay}" Foreground="{StaticResource Purple}" Background="Transparent"/>
+                    <TextBox Style="{StaticResource ModernBox}" Margin="20,0,0,0" Grid.Column="1" Text="{Binding SettingsViewModel.SettingsModel.JSONSettings.BloodWeb.ItemQuantity, Mode=TwoWay}" Foreground="{StaticResource Purple}" Background="Transparent"/>
                 </Grid>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="1.5*"/>
                     </Grid.ColumnDefinitions>
 
                     <Label Margin="10,0,0,0" Grid.Row="0" Grid.Column="0" Content="Legacy Prestige Level" Foreground="White"/>
-                    <TextBox Margin="20,0,0,0" Grid.Row="0" Grid.Column="1" Text="{Binding SettingsViewModel.SettingsModel.JSONSettings.BloodWeb.LegacyPrestigeLevel, Mode=TwoWay}" Foreground="{StaticResource Purple}" Background="Transparent"/>
+                    <TextBox Style="{StaticResource ModernBox}" Margin="20,0,0,0" Grid.Row="0" Grid.Column="1" Text="{Binding SettingsViewModel.SettingsModel.JSONSettings.BloodWeb.LegacyPrestigeLevel, Mode=TwoWay}" Foreground="{StaticResource Purple}" Background="Transparent"/>
                 </Grid>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="1.5*"/>
                     </Grid.ColumnDefinitions>
 
                     <Label Margin="10,0,0,0" Grid.Row="0" Grid.Column="0" Content="BloodWeb Level" Foreground="White"/>
-                    <TextBox Margin="20,0,0,0" Grid.Row="0" Grid.Column="1" Text="{Binding SettingsViewModel.SettingsModel.JSONSettings.BloodWeb.BloodWebLevel, Mode=TwoWay}" Foreground="{StaticResource Purple}" Background="Transparent"/>
+                    <TextBox Style="{StaticResource ModernBox}" Margin="20,0,0,0" Grid.Row="0" Grid.Column="1" Text="{Binding SettingsViewModel.SettingsModel.JSONSettings.BloodWeb.BloodWebLevel, Mode=TwoWay}" Foreground="{StaticResource Purple}" Background="Transparent"/>
                 </Grid>
             </StackPanel>
         </Grid>

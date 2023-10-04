@@ -113,6 +113,34 @@
         </Style.Triggers>
     </Style>
 
+    <Style TargetType="{x:Type TextBox}" x:Key="ModernBox">
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="Background" Value="{DynamicResource BarHover}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Purple}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBoxBase}">
+                    <Border Name="Border"
+                              CornerRadius="5"
+                              Background="{DynamicResource Bar}"
+                              BorderThickness="1.25"
+                              BorderBrush="{DynamicResource BarHover}">
+                        <ScrollViewer Margin="0" x:Name="PART_ContentHost"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{DynamicResource BarHover}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style TargetType="{x:Type ToggleButton}">
         <Setter Property="Template">
             <Setter.Value>

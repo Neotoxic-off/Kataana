@@ -41,7 +41,7 @@
                     </Grid.ColumnDefinitions>
 
                     <Label Grid.Column="0" Content="Cookie:" Foreground="White"/>
-                    <TextBox Margin="20,0,0,0" Grid.Column="1" IsReadOnly="True" Text="{Binding ProxyViewModel.ProxyModel.BHVRSession}" Background="Transparent" Foreground="{StaticResource Purple}"/>
+                    <TextBox Style="{StaticResource ModernBox}" Margin="20,0,0,0" Grid.Column="1" IsReadOnly="True" Text="{Binding ProxyViewModel.ProxyModel.BHVRSession}" Background="Transparent" Foreground="{StaticResource Purple}"/>
                 </Grid>
             </StackPanel>
         </Grid>

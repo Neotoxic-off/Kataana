@@ -40,7 +40,7 @@
                         </Grid.ColumnDefinitions>
 
                         <Label Margin="10,0,0,0" Grid.Row="0" Grid.Column="0" Content="Market" Foreground="White"/>
-                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SettingsModel.JSONSettings.MarketFlux, Mode=TwoWay}" Foreground="{StaticResource Purple}" Background="Transparent"/>
+                        <TextBox Style="{StaticResource ModernBox}" Grid.Row="0" Grid.Column="1" Text="{Binding SettingsModel.JSONSettings.MarketFlux, Mode=TwoWay}" Foreground="{StaticResource Purple}" Background="Transparent"/>
                     </Grid>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -49,7 +49,7 @@
                         </Grid.ColumnDefinitions>
 
                         <Label Margin="10,0,0,0" Grid.Row="0" Grid.Column="0" Content="Bloodweb" Foreground="White"/>
-                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SettingsModel.JSONSettings.BloodwebFlux, Mode=TwoWay}" Foreground="{StaticResource Purple}" Background="Transparent"/>
+                        <TextBox Style="{StaticResource ModernBox}" Grid.Row="0" Grid.Column="1" Text="{Binding SettingsModel.JSONSettings.BloodwebFlux, Mode=TwoWay}" Foreground="{StaticResource Purple}" Background="Transparent"/>
                     </Grid>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -58,7 +58,7 @@
                         </Grid.ColumnDefinitions>
 
                         <Label Margin="10,0,0,0" Grid.Row="0" Grid.Column="0" Content="Get all" Foreground="White"/>
-                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SettingsModel.JSONSettings.GetAllFlux, Mode=TwoWay}" Foreground="{StaticResource Purple}" Background="Transparent"/>
+                        <TextBox Style="{StaticResource ModernBox}" Grid.Row="0" Grid.Column="1" Text="{Binding SettingsModel.JSONSettings.GetAllFlux, Mode=TwoWay}" Foreground="{StaticResource Purple}" Background="Transparent"/>
                     </Grid>
                 </StackPanel>
 
@@ -71,7 +71,7 @@
                         </Grid.ColumnDefinitions>
 
                         <Label Margin="10,0,0,0" Grid.Row="0" Grid.Column="0" Content="Market" Foreground="White"/>
-                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SettingsModel.JSONSettings.MarketFile, Mode=TwoWay}" Foreground="{StaticResource Purple}" Background="Transparent"/>
+                        <TextBox Style="{StaticResource ModernBox}" Grid.Row="0" Grid.Column="1" Text="{Binding SettingsModel.JSONSettings.MarketFile, Mode=TwoWay}" Foreground="{StaticResource Purple}" Background="Transparent"/>
                     </Grid>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -80,7 +80,7 @@
                         </Grid.ColumnDefinitions>
 
                         <Label Margin="10,0,0,0" Grid.Row="0" Grid.Column="0" Content="Bloodweb" Foreground="White"/>
-                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SettingsModel.JSONSettings.BloodwebFile, Mode=TwoWay}" Foreground="{StaticResource Purple}" Background="Transparent"/>
+                        <TextBox Style="{StaticResource ModernBox}" Grid.Row="0" Grid.Column="1" Text="{Binding SettingsModel.JSONSettings.BloodwebFile, Mode=TwoWay}" Foreground="{StaticResource Purple}" Background="Transparent"/>
                     </Grid>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -89,7 +89,7 @@
                         </Grid.ColumnDefinitions>
 
                         <Label Margin="10,0,0,0" Grid.Row="0" Grid.Column="0" Content="Get all" Foreground="White"/>
-                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding SettingsModel.JSONSettings.GetAllFile, Mode=TwoWay}" Foreground="{StaticResource Purple}" Background="Transparent"/>
+                        <TextBox Style="{StaticResource ModernBox}" Grid.Row="0" Grid.Column="1" Text="{Binding SettingsModel.JSONSettings.GetAllFile, Mode=TwoWay}" Foreground="{StaticResource Purple}" Background="Transparent"/>
                     </Grid>
                 </StackPanel>
 
