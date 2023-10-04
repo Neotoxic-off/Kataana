@@ -16,14 +16,13 @@ using System.Net.Http;
 using System.Collections.ObjectModel;
 using Newtonsoft.Json;
 using System.Xml.Linq;
-using Titanium.Web.Proxy.Network;
 using System.Diagnostics;
 
 using Fiddler;
 
 namespace Kataana.ViewModels
 {
-    public class ProxyViewModel: BaseViewModel
+    public class ProxyViewModel : BaseViewModel
     {
         public ProxyModel ProxyModel { get; set; }
 
@@ -52,16 +51,12 @@ namespace Kataana.ViewModels
         public OptionsViewModel OptionsViewModel { get; set; }
         private Dictionary<bool, Action<object>> States { get; set; }
         private Dictionary<bool, string> Labels { get; set; }
-        private Dictionary<string, Func<SessionEventArgs, SessionEventArgs>> Corrupters { get; set; }
+        private Dictionary<string, Func<Session, Session>> Corrupters { get; set; }
         public DelegateCommand ChangeStateProxyCommand { get; set; }
-        private ExplicitProxyEndPoint ExplicitProxyEndPoint { get; set; }
 
         public ProxyViewModel(AccountViewModel accountViewModel, MarketViewModel marketViewModel, SettingsViewModel settingsViewModel)
         {
-            ProxyModel = new ProxyModel()
-            {
-                ProxyServer = new ProxyServer(true, false, false)
-            };
+            ProxyModel = new ProxyModel();
             AccountViewModel = accountViewModel;
             MarketViewModel = marketViewModel;
             SettingsViewModel = settingsViewModel;
@@ -78,11 +73,11 @@ namespace Kataana.ViewModels
                 { false, "Start" },
                 { true, "Stop" }
             };
-            Corrupters = new Dictionary<string, Func<SessionEventArgs, SessionEventArgs>>()
+            Corrupters = new Dictionary<string, Func<Session, Session>>()
             {
-                { "/v1/inventories", ManipulateInventories },
-                { "/v1/dbd-character-data/bloodweb", ManipulateBloodweb },
-                { "/v1/dbd-character-data/get-all", ManipulateGetAll }
+                { "/api/v1/inventories", ManipulateInventories },
+                { "/api/v1/dbd-character-data/bloodweb", ManipulateBloodweb },
+                { "/api/v1/dbd-character-data/get-all", ManipulateGetAll }
             };
             ProxyModel.Logs = new ObservableCollection<string>();
             ChangeStateProxyCommand = new DelegateCommand(ChangeState);
@@ -91,8 +86,8 @@ namespace Kataana.ViewModels
 
         private void ChangeState(object data)
         {
-            States[ProxyModel.ProxyServer.ProxyRunning](data);
-            ProxyModel.Label = Labels[ProxyModel.ProxyServer.ProxyRunning];
+            States[FiddlerApplication.IsStarted()](data);
+            ProxyModel.Label = Labels[FiddlerApplication.IsStarted()];
         }
 
         private void StartProxy(object data)
@@ -101,22 +96,24 @@ namespace Kataana.ViewModels
                 .RegisterAsSystemProxy()
                 .DecryptSSL()
                 .Build();
-                
+
             if (FiddlerApplication.IsStarted() == false)
             {
-                ProxyModel.ProxyServer.Startup(startupSettings);
+                InstallCertificate();
+                FiddlerApplication.Startup(startupSettings);
             }
 
-            ProxyModel.ProxyServer.BeforeResponse += Manipulate;
+            FiddlerApplication.BeforeResponse += Manipulate;
 
         }
 
         private void StopProxy(object data)
         {
-            ProxyModel.ProxyServer.BeforeResponse -= Manipulate;
+            FiddlerApplication.BeforeResponse -= Manipulate;
 
-            if (ProxyModel.ProxyServer.IsStarted())
-                ProxyModel.ProxyServer.Shutdown();
+            if (FiddlerApplication.IsStarted() == true)
+            {
+                FiddlerApplication.Shutdown();
                 UninstallCertificate();
             }
         }
@@ -152,29 +149,24 @@ namespace Kataana.ViewModels
             return (true);
         }
 
-        private async Task Manipulate(object sender, SessionEventArgs e)
+        private async void Manipulate(Session e)
         {
-            string[] methods = { "GET", "POST", "PUT" };
             string tmp_cookie = null;
 
-            e.HttpClient.Request.KeepBody = true;
-            
-            if (e.HttpClient.Request.Host != null)
+            if (e.oRequest.host != null)
             {
-                Console.WriteLine(e.HttpClient.Request.Url);
-                if (methods.Contains(e.HttpClient.Request.Method.ToUpper()) == true)
+                if (e.fullUrl.Contains(".bhvrdbd.com") == true)
                 {
-                    if (e.HttpClient.Request.Url.Contains(".bhvrdbd.com") == true)
+                    Console.WriteLine(e.PathAndQuery);
+                    e.bBufferResponse = true;
+                    tmp_cookie = GetCookie(e);
+                    if (tmp_cookie != null && ProxyModel.BHVRSession != tmp_cookie)
                     {
-                        tmp_cookie = GetCookie(e);
-                        if (tmp_cookie != null && ProxyModel.BHVRSession != tmp_cookie)
-                        {
-                            ProxyModel.BHVRSession = tmp_cookie;
-                        }
-                        if (IsCorruptable(e.HttpClient.Request.RequestUri.LocalPath) == true)
-                        {
-                            Corrupters[e.HttpClient.Request.RequestUri.LocalPath](e);
-                        }
+                        ProxyModel.BHVRSession = tmp_cookie;
+                    }
+                    if (IsCorruptable(e.PathAndQuery) == true)
+                    {
+                        e = Corrupters[e.PathAndQuery](e);
                     }
                 }
             }
@@ -182,9 +174,9 @@ namespace Kataana.ViewModels
 
         private bool IsCorruptable(string Url)
         {
-            foreach (KeyValuePair<string, Func<SessionEventArgs, SessionEventArgs>> data in Corrupters)
+            foreach (KeyValuePair<string, Func<Session, Session>> data in Corrupters)
             {
-                if (Url == data.Key)
+                if (Url.Contains(data.Key) == true)
                 {
                     return (true);
                 }
@@ -193,21 +185,22 @@ namespace Kataana.ViewModels
             return (false);
         }
 
-        private SessionEventArgs ManipulateInventories(SessionEventArgs session)
+        private Session ManipulateInventories(Session session)
         {
             string modifiedResponseBody = null;
 
             if (OptionsViewModel.OptionsModel.UnlockMarket == true)
             {
-                modifiedResponseBody = Newtonsoft.Json.JsonConvert.SerializeObject(MarketViewModel.MarketModel.JSONMarketModel);
-                session.SetResponseBodyString(modifiedResponseBody);
-                session.HttpClient.Response.ContentLength = modifiedResponseBody.Length;
+                modifiedResponseBody = Newtonsoft.Json.JsonConvert.SerializeObject(
+                    MarketViewModel.MarketModel.JSONMarketModel
+                );
+                session.utilSetResponseBody(modifiedResponseBody);
             }
 
             return (session);
         }
 
-        private SessionEventArgs ManipulateBloodweb(SessionEventArgs session)
+        private Session ManipulateBloodweb(Session session)
         {
             string modifiedResponseBody = null;
 
@@ -224,29 +217,25 @@ namespace Kataana.ViewModels
                 modifiedResponseBody = JsonConvert.SerializeObject(
                     BloodwebViewModel.BloodwebModel.JSONBloodwebModel
                 );
-                session.SetResponseBodyString(modifiedResponseBody);
-                session.HttpClient.Response.ContentLength = modifiedResponseBody.Length;
+                session.utilSetResponseBody(modifiedResponseBody);
             }
 
             return (session);
         }
 
-        private string GetCookie(SessionEventArgs session)
+        private string GetCookie(Session session)
         {
-            string token = "bhvrSession";
+            string token = "bhvrSession=";
 
-            if (session.HttpClient.Response.Headers.Headers.Count() > 0)
+            if (session.RequestHeaders.ToString().Contains(token) == true)
             {
-                if (session.HttpClient.Response.Headers.Headers.ContainsKey(token) == true)
-                {
-                    return (session.HttpClient.Response.Headers.Headers[token].Value);
-                }
+                return (session.RequestHeaders["Cookie"].ToString().Replace(token, String.Empty));
             }
 
             return (null);
         }
 
-        private SessionEventArgs ManipulateGetAll(SessionEventArgs session)
+        private Session ManipulateGetAll(Session session)
         {
             string modifiedResponseBody = null;
 
@@ -262,12 +251,11 @@ namespace Kataana.ViewModels
                         item.quantity = SettingsViewModel.SettingsModel.JSONSettings.BloodWeb.ItemQuantity;
                     }
                 }
-                
+
                 modifiedResponseBody = JsonConvert.SerializeObject(
                     GetAllViewModel.GetAllModel.JSONGetAllModel
                 );
-                session.SetResponseBodyString(modifiedResponseBody);
-                session.HttpClient.Response.ContentLength = modifiedResponseBody.Length;
+                session.utilSetResponseBody(modifiedResponseBody);
             }
 
             return (session);
