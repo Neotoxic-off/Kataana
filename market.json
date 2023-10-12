@@ -1,6 +1,7 @@
 {
   "code": 200,
   "message": "OK",
+  "updated": "10/12/2023",
   "data": {
     "inventory": [
       {
