@@ -61,13 +61,16 @@ namespace Kataana.ViewModels
 
         private async Task<bool> IsUpdated()
         {
-            string latest = await DownloadVersion();
-            Models.JSON.JSONMarketModel current = MarketModel.JSONMarketModel;
-
-            if (latest != null)
-            {
-                return (current.updated == latest.Replace("\n", string.Empty));
-            }
+            #if DEBUG
+                Console.WriteLine("Mode=Debug");
+            #else
+                string latest = await DownloadVersion();
+                Models.JSON.JSONMarketModel current = MarketModel.JSONMarketModel;
+                if (latest != null)
+                {
+                    return (current.updated == latest.Replace("\n", string.Empty));
+                }
+            #endif
 
             return (true);
         }

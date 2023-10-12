@@ -24,5 +24,47 @@ namespace Kataana.Models
             get { return _unlockMarket; }
             set { SetProperty(ref _unlockMarket, value); }
         }
+
+        private bool _spoofPlayername;
+        public bool SpoofPlayername
+        {
+            get { return _spoofPlayername; }
+            set { SetProperty(ref _spoofPlayername, value); }
+        }
+
+        private bool _bypassAnalytics;
+        public bool BypassAnalytics
+        {
+            get { return _bypassAnalytics; }
+            set { SetProperty(ref _bypassAnalytics, value); }
+        }
+
+        private bool _bypassLogin;
+        public bool BypassLogin
+        {
+            get { return _bypassLogin; }
+            set { SetProperty(ref _bypassLogin, value); }
+        }
+
+        private bool _fakeLocation;
+        public bool FakeLocation
+        {
+            get { return _fakeLocation; }
+            set { SetProperty(ref _fakeLocation, value); }
+        }
+
+        private bool _forceClientValidation;
+        public bool ForceClientValidation
+        {
+            get { return _forceClientValidation; }
+            set { SetProperty(ref _forceClientValidation, value); }
+        }
+
+        private bool _forceIncentives;
+        public bool ForceIncentives
+        {
+            get { return _forceIncentives; }
+            set { SetProperty(ref _forceIncentives, value); }
+        }
     }
 }

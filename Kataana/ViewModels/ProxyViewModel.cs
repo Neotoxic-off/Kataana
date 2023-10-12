@@ -47,11 +47,13 @@ namespace Kataana.ViewModels
             set { SetProperty(ref _settingsViewModel, value); }
         }
         public BloodwebViewModel BloodwebViewModel { get; set; }
+        public PlayernameViewModel PlayernameViewModel { get; set; }
         public GetAllViewModel GetAllViewModel { get; set; }
         public OptionsViewModel OptionsViewModel { get; set; }
         private Dictionary<bool, Action<object>> States { get; set; }
         private Dictionary<bool, string> Labels { get; set; }
         private Dictionary<string, Func<Session, Session>> Corrupters { get; set; }
+        private Dictionary<string, Func<Session, Session>> BeforeCorrupters { get; set; }
         public DelegateCommand ChangeStateProxyCommand { get; set; }
 
         public ProxyViewModel(AccountViewModel accountViewModel, MarketViewModel marketViewModel, SettingsViewModel settingsViewModel)
@@ -63,6 +65,8 @@ namespace Kataana.ViewModels
             BloodwebViewModel = new BloodwebViewModel();
             GetAllViewModel = new GetAllViewModel();
             OptionsViewModel = new OptionsViewModel();
+            PlayernameViewModel = new PlayernameViewModel();
+            
             States = new Dictionary<bool, Action<object>>()
             {
                 { false, StartProxy },
@@ -76,8 +80,18 @@ namespace Kataana.ViewModels
             Corrupters = new Dictionary<string, Func<Session, Session>>()
             {
                 { "/api/v1/inventories", ManipulateInventories },
+                { "/api/v1/playername", ManipulatePlayername },
                 { "/api/v1/dbd-character-data/bloodweb", ManipulateBloodweb },
-                { "/api/v1/dbd-character-data/get-all", ManipulateGetAll }
+                { "/api/v1/dbd-character-data/get-all", ManipulateGetAll },
+                { "/api/v1/auth/provider/egs/login", ManipulateLogin },
+                { "/api/v1/me/location", ManipulateLocation },
+                { "/api/v1/clientVersion/check", ManipulateClientVersion },
+                { "/api/v1/matchIncentives", ManipulateIncentives }
+            };
+            BeforeCorrupters = new Dictionary<string, Func<Session, Session>>()
+            {
+                { "/api/v1/gameLogs/batch", ManipulateAnalytics },
+                { "/api/v1/gameDataAnalytics/v2/batch", ManipulateAnalytics }
             };
             ProxyModel.Logs = new ObservableCollection<string>();
             ChangeStateProxyCommand = new DelegateCommand(ChangeState);
@@ -152,36 +166,70 @@ namespace Kataana.ViewModels
 
         private void BeforeRequest(Session e)
         {
-            e.bBufferResponse = true;
-        }
+            string key = null;
 
-        private void Manipulate(Session e)
-        {
             if (e.oRequest.host != null)
             {
-                if (e.fullUrl.Contains(".bhvrdbd.com") == true)
+                if (e.hostname.Contains(".bhvrdbd.com") == true)
                 {
-                    Cookie(e);
-                    if (IsCorruptable(e.PathAndQuery) == true)
+                    e.bBufferResponse = true;
+                    key = IsBeforeCorruptable(e.PathAndQuery);
+                    if (key != null)
                     {
                         e.bBufferResponse = true;
-                        Corrupters[e.PathAndQuery](e);
+                        BeforeCorrupters[key](e);
                     }
                 }
             }
         }
 
-        private bool IsCorruptable(string Url)
+        private void Manipulate(Session e)
         {
-            foreach (KeyValuePair<string, Func<Session, Session>> data in Corrupters)
+            string key = null;
+
+            if (e.oRequest.host != null)
             {
-                if (Url == data.Key)
+                if (e.hostname.Contains(".bhvrdbd.com") == true)
                 {
-                    return (true);
+                    Cookie(e);
+                    key = IsCorruptable(e.PathAndQuery);
+                    if (key != null)
+                    {
+                        e.bBufferResponse = true;
+                        Corrupters[key](e);
+                    }
+                }
+            }
+        }
+
+        private string IsBeforeCorruptable(string Url)
+        {
+            string key = null;
+
+            foreach (KeyValuePair<string, Func<Session, Session>> data in BeforeCorrupters)
+            {
+                if (Url.Contains(data.Key) == true)
+                {
+                    return (data.Key);
                 }
             }
 
-            return (false);
+            return (null);
+        }
+
+        private string IsCorruptable(string Url)
+        {
+            string key = null;
+
+            foreach (KeyValuePair<string, Func<Session, Session>> data in Corrupters)
+            {
+                if (Url.Contains(data.Key) == true)
+                {
+                    return (data.Key);
+                }
+            }
+
+            return (null);
         }
 
         private Session ManipulateInventories(Session session)
@@ -196,6 +244,59 @@ namespace Kataana.ViewModels
                     MarketViewModel.MarketModel.JSONMarketModel
                 );
                 session.utilSetResponseBody(modifiedResponseBody);
+            }
+
+            return (session);
+        }
+
+        private Session ManipulateLogin(Session session)
+        {
+            session.bBufferResponse = true;
+            session.utilDecodeResponse();
+
+            if (OptionsViewModel.OptionsModel.BypassLogin == true)
+            {
+                session.utilSetResponseBody("{\"preferredLanguage\":\"en\",\"friendsFirstSync\":{\"egs\":true},\"creationDate\":1656237604,\"fixedMyFriendsUserPlatformId\":{\"egs\":true},\"id\":\"7b3752e0-869b-497f-93e0-3810e2ae7895\",\"provider\":{\"providerId\":\"0244ad2c01de4e7bb311813ec4651ee0\",\"providerName\":\"egs\",\"userId\":\"7b3752e0-869b-497f-93e0-3810e2ae7895\"},\"providers\":[{\"providerName\":\"egs\",\"providerId\":\"0244ad2c01de4e7bb311813ec4651ee0\"}],\"friends\":[],\"triggerResults\":{\"success\":[],\"error\":[]},\"tokenId\":\"8e8a5ece-b2ba-4c66-946c-9a4ce1f4ad7b\",\"generated\":1697129977,\"expire\":1697216377,\"userId\":\"7b3752e0-869b-497f-93e0-3810e2ae7895\",\"endpointName\":\"egs\",\"providerName\":\"egs\",\"token\":\"8e8a5ece-b2ba-4c66-946c-9a4ce1f4ad7b\"}");
+            }
+
+            return (session);
+        }
+
+        private Session ManipulatePlayername(Session session)
+        {
+            string modifiedResponseBody = null;
+
+            if (OptionsViewModel.OptionsModel.SpoofPlayername == true)
+            {
+                session.bBufferResponse = true;
+                session.utilDecodeResponse();
+                if (session.PathAndQuery.EndsWith("/api/v1/playername") == false)
+                {
+                    session.PathAndQuery = $"/api/v1/playername/egs/neo";
+                }
+                this.PlayernameViewModel.PlayernameModel.JSONPlayername = JsonConvert.DeserializeObject<Models.JSON.JSONPlayername>(
+                    session.GetResponseBodyAsString()
+                );
+                this.PlayernameViewModel.PlayernameModel.JSONPlayername.playerName = "neo#3773";
+                this.PlayernameViewModel.PlayernameModel.JSONPlayername.providerPlayerNames.egs = "neo";
+                this.PlayernameViewModel.PlayernameModel.JSONPlayername.userId = "8822b6e1-15ec-478c-80c4-bb1745c76670";
+                modifiedResponseBody = JsonConvert.SerializeObject(
+                    this.PlayernameViewModel.PlayernameModel.JSONPlayername
+                );
+                session.utilSetResponseBody(modifiedResponseBody);
+            }
+
+            return (session);
+        }
+
+        private Session ManipulateAnalytics(Session session)
+        {
+            if (OptionsViewModel.OptionsModel.BypassAnalytics == true)
+            {
+                session.bBufferResponse = true;
+                session.utilDecodeResponse();
+
+                session.utilSetRequestBody("{}");
             }
 
             return (session);
@@ -227,16 +328,6 @@ namespace Kataana.ViewModels
             return (session);
         }
 
-        private void Cookie(Session session)
-        {
-            string token = "bhvrSession=";
-
-            if (session.RequestHeaders.ToString().Contains(token) == true)
-            {
-                ProxyModel.BHVRSession = session.RequestHeaders["Cookie"].ToString().Replace(token, String.Empty);
-            }
-        }
-
         private Session ManipulateGetAll(Session session)
         {
             string modifiedResponseBody = null;
@@ -263,6 +354,55 @@ namespace Kataana.ViewModels
             }
 
             return (session);
+        }
+
+        private Session ManipulateLocation(Session session)
+        {
+            if (OptionsViewModel.OptionsModel.FakeLocation == true)
+            {
+                session.bBufferResponse = true;
+                session.utilDecodeResponse();
+
+                session.utilSetResponseBody("{\"continent\":\"EU\",\"country\":\"FR\",\"city\":\"Paris\"}");
+            }
+
+            return (session);
+        }
+
+        private Session ManipulateClientVersion(Session session)
+        {
+            if (OptionsViewModel.OptionsModel.ForceClientValidation == true)
+            {
+                session.bBufferResponse = true;
+                session.utilDecodeResponse();
+
+                session.utilSetResponseBody("{\"isValid\":true}");
+            }
+
+            return (session);
+        }
+
+        private Session ManipulateIncentives(Session session)
+        {
+            if (OptionsViewModel.OptionsModel.ForceIncentives == true)
+            {
+                session.bBufferResponse = true;
+                session.utilDecodeResponse();
+
+                session.utilSetResponseBody("{\"killerPercentageIncentive\":100,\"survivorPercentageIncentive\":100,\"refreshTime\":1800}");
+            }
+
+            return (session);
+        }
+
+        private void Cookie(Session session)
+        {
+            string token = "bhvrSession=";
+
+            if (session.RequestHeaders.ToString().Contains(token) == true)
+            {
+                ProxyModel.BHVRSession = session.RequestHeaders["Cookie"].ToString().Replace(token, String.Empty);
+            }
         }
     }
 }
