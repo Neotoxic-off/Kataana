@@ -1,15 +1,15 @@
 {
+    "MarketFlux": "https://raw.githubusercontent.com/Neotoxic-off/Kataana/main/market.json",
     "VersionFlux": "https://raw.githubusercontent.com/Elevatia/Market/main/version",
     "MarketFile": "market.json",
-    "MarketFlux": "https://raw.githubusercontent.com/Elevatia/Market/main/market.json",
     "BloodwebFile": "bloodweb.json",
-    "BloodwebFlux": "https://raw.githubusercontent.com/Elevatia/Market/main/bloodweb.json",
+    "BloodwebFlux": "https://raw.githubusercontent.com/Neotoxic-off/Kataana/main/bloodweb.json",
     "GetAllFile": "getall.json",
-    "GetAllFlux": "https://raw.githubusercontent.com/Elevatia/Market/main/getall.json",
+    "GetAllFlux": "https://raw.githubusercontent.com/Neotoxic-off/Kataana/main/getall.json",
     "BloodWeb": {
-        "BloodWebLevel": 50,
-        "LegacyPrestigeLevel": 3,
-        "PrestigeLevel": 100,
-        "ItemQuantity": 3
+        "PrestigeLevel": 22,
+        "ItemQuantity": 10,
+        "LegacyPrestigeLevel": 0,
+        "BloodWebLevel": 20
     }
 }
