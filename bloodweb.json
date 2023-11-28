@@ -1,11 +1,5 @@
 {
-    "author": "Ismail",
-    "updated": "9/23/2023",
-    "bloodWebLevelChanged": false,
-    "updatedWallets": [],
-    "characterName": "",
-    "bloodWebLevel": 50,
-    "prestigeLevel": 20,
+    "author": "neo",
     "bloodWebData": {
         "paths": [
             "0_101"
@@ -22,7 +16,101 @@
             }
         ]
     },
+    "bloodWebLevel": 50,
+    "bloodWebLevelChanged": false,
     "characterItems": [
+        {
+            "itemId": "Addon_K34_01",
+            "quantity": 1
+        },
+        {
+            "itemId": "Addon_K34_02",
+            "quantity": 1
+        },
+        {
+            "itemId": "Addon_K34_03",
+            "quantity": 1
+        },
+        {
+            "itemId": "Addon_K34_04",
+            "quantity": 1
+        },
+        {
+            "itemId": "Addon_K34_05",
+            "quantity": 1
+        },
+        {
+            "itemId": "Addon_K34_06",
+            "quantity": 1
+        },
+        {
+            "itemId": "Addon_K34_07",
+            "quantity": 1
+        },
+        {
+            "itemId": "Addon_K34_08",
+            "quantity": 1
+        },
+        {
+            "itemId": "Addon_K34_09",
+            "quantity": 1
+        },
+        {
+            "itemId": "Addon_K34_10",
+            "quantity": 1
+        },
+        {
+            "itemId": "Addon_K34_11",
+            "quantity": 1
+        },
+        {
+            "itemId": "Addon_K34_12",
+            "quantity": 1
+        },
+        {
+            "itemId": "Addon_K34_13",
+            "quantity": 1
+        },
+        {
+            "itemId": "Addon_K34_14",
+            "quantity": 1
+        },
+        {
+            "itemId": "Addon_K34_15",
+            "quantity": 1
+        },
+        {
+            "itemId": "Addon_K34_16",
+            "quantity": 1
+        },
+        {
+            "itemId": "Addon_K34_17",
+            "quantity": 1
+        },
+        {
+            "itemId": "Addon_K34_18",
+            "quantity": 1
+        },
+        {
+            "itemId": "Addon_K34_19",
+            "quantity": 1
+        },
+        {
+            "itemId": "Addon_K34_20",
+            "quantity": 1
+        },
+        {
+            "itemId": "K25P01",
+            "quantity": 3
+        },
+        {
+            "itemId": "K25P02",
+            "quantity": 3
+        },
+        {
+            "itemId": "K25P03",
+            "quantity": 3
+        },
         {
             "itemId": "Agitation",
             "quantity": 3
@@ -4476,5 +4564,9 @@
             "quantity": 3
         }
     ],
-    "legacyPrestigeLevel": 3
+    "characterName": "",
+    "legacyPrestigeLevel": 3,
+    "prestigeLevel": 20,
+    "updated": "11.28.2023",
+    "updatedWallets": []
 }
