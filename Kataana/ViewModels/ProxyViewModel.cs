@@ -1,4 +1,4 @@
-﻿using Kataana.Models;
+using Kataana.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -236,7 +236,7 @@ namespace Kataana.ViewModels
         {
             string modifiedResponseBody = null;
 
-            if (OptionsViewModel.OptionsModel.UnlockMarket == true)
+            if (OptionsViewModel.OptionsModel.JSONOptionModel.UnlockMarket == true)
             {
                 session.bBufferResponse = true;
                 session.utilDecodeResponse();
@@ -254,7 +254,7 @@ namespace Kataana.ViewModels
             session.bBufferResponse = true;
             session.utilDecodeResponse();
 
-            if (OptionsViewModel.OptionsModel.BypassLogin == true)
+            if (OptionsViewModel.OptionsModel.JSONOptionModel.BypassLogin == true)
             {
                 session.utilSetResponseBody("{\"preferredLanguage\":\"en\",\"friendsFirstSync\":{\"egs\":true},\"creationDate\":1656237604,\"fixedMyFriendsUserPlatformId\":{\"egs\":true},\"id\":\"7b3752e0-869b-497f-93e0-3810e2ae7895\",\"provider\":{\"providerId\":\"0244ad2c01de4e7bb311813ec4651ee0\",\"providerName\":\"egs\",\"userId\":\"7b3752e0-869b-497f-93e0-3810e2ae7895\"},\"providers\":[{\"providerName\":\"egs\",\"providerId\":\"0244ad2c01de4e7bb311813ec4651ee0\"}],\"friends\":[],\"triggerResults\":{\"success\":[],\"error\":[]},\"tokenId\":\"8e8a5ece-b2ba-4c66-946c-9a4ce1f4ad7b\",\"generated\":1697129977,\"expire\":1697216377,\"userId\":\"7b3752e0-869b-497f-93e0-3810e2ae7895\",\"endpointName\":\"egs\",\"providerName\":\"egs\",\"token\":\"8e8a5ece-b2ba-4c66-946c-9a4ce1f4ad7b\"}");
             }
@@ -266,7 +266,7 @@ namespace Kataana.ViewModels
         {
             string modifiedResponseBody = null;
 
-            if (OptionsViewModel.OptionsModel.SpoofPlayername == true)
+            if (OptionsViewModel.OptionsModel.JSONOptionModel.SpoofPlayername == true)
             {
                 session.bBufferResponse = true;
                 session.utilDecodeResponse();
@@ -291,7 +291,7 @@ namespace Kataana.ViewModels
 
         private Session ManipulateAnalytics(Session session)
         {
-            if (OptionsViewModel.OptionsModel.BypassAnalytics == true)
+            if (OptionsViewModel.OptionsModel.JSONOptionModel.BypassAnalytics == true)
             {
                 session.bBufferResponse = true;
                 session.utilDecodeResponse();
@@ -306,7 +306,7 @@ namespace Kataana.ViewModels
         {
             string modifiedResponseBody = null;
 
-            if (OptionsViewModel.OptionsModel.TemporaryUnlock == true)
+            if (OptionsViewModel.OptionsModel.JSONOptionModel.TemporaryUnlock == true)
             {
                 session.bBufferResponse = true;
                 session.utilDecodeResponse();
@@ -332,7 +332,7 @@ namespace Kataana.ViewModels
         {
             string modifiedResponseBody = null;
 
-            if (OptionsViewModel.OptionsModel.TemporaryUnlock == true)
+            if (OptionsViewModel.OptionsModel.JSONOptionModel.TemporaryUnlock == true)
             {
                 session.bBufferResponse = true;
                 session.utilDecodeResponse();
@@ -358,7 +358,7 @@ namespace Kataana.ViewModels
 
         private Session ManipulateLocation(Session session)
         {
-            if (OptionsViewModel.OptionsModel.FakeLocation == true)
+            if (OptionsViewModel.OptionsModel.JSONOptionModel.FakeLocation == true)
             {
                 session.bBufferResponse = true;
                 session.utilDecodeResponse();
@@ -371,7 +371,7 @@ namespace Kataana.ViewModels
 
         private Session ManipulateClientVersion(Session session)
         {
-            if (OptionsViewModel.OptionsModel.ForceClientValidation == true)
+            if (OptionsViewModel.OptionsModel.JSONOptionModel.ForceClientValidation == true)
             {
                 session.bBufferResponse = true;
                 session.utilDecodeResponse();
@@ -384,7 +384,7 @@ namespace Kataana.ViewModels
 
         private Session ManipulateIncentives(Session session)
         {
-            if (OptionsViewModel.OptionsModel.ForceIncentives == true)
+            if (OptionsViewModel.OptionsModel.JSONOptionModel.ForceIncentives == true)
             {
                 session.bBufferResponse = true;
                 session.utilDecodeResponse();
