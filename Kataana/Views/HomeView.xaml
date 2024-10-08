@@ -29,42 +29,42 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.Row="0" Orientation="Horizontal">
-                    <ToggleButton Height="20" IsChecked="{Binding ProxyViewModel.OptionsViewModel.OptionsModel.TemporaryUnlock}"/>
+                    <ToggleButton Height="20" IsChecked="{Binding ProxyViewModel.OptionsViewModel.OptionsModel.JSONOptionModel.TemporaryUnlock, Mode=TwoWay}"/>
                     <Label Margin="10,0,0,0" Content="Infinite items" VerticalAlignment="Center" Foreground="White"/>
                 </StackPanel>
 
                 <StackPanel Grid.Row="1" Orientation="Horizontal">
-                    <ToggleButton Height="20" IsChecked="{Binding ProxyViewModel.OptionsViewModel.OptionsModel.UnlockMarket}"/>
+                    <ToggleButton Height="20" IsChecked="{Binding ProxyViewModel.OptionsViewModel.OptionsModel.JSONOptionModel.UnlockMarket, Mode=TwoWay}"/>
                     <Label Margin="10,0,0,0" Content="Unlock characters &amp; skins" VerticalAlignment="Center" Foreground="White"/>
                 </StackPanel>
 
                 <StackPanel Grid.Row="2" Orientation="Horizontal">
-                    <ToggleButton Height="20" IsChecked="{Binding ProxyViewModel.OptionsViewModel.OptionsModel.SpoofPlayername}"/>
+                    <ToggleButton Height="20" IsChecked="{Binding ProxyViewModel.OptionsViewModel.OptionsModel.JSONOptionModel.SpoofPlayername, Mode=TwoWay}"/>
                     <Label Margin="10,0,0,0" Content="Spoof playername" VerticalAlignment="Center" Foreground="White"/>
                 </StackPanel>
 
                 <StackPanel Grid.Row="3" Orientation="Horizontal">
-                    <ToggleButton Height="20" IsChecked="{Binding ProxyViewModel.OptionsViewModel.OptionsModel.BypassAnalytics}"/>
+                    <ToggleButton Height="20" IsChecked="{Binding ProxyViewModel.OptionsViewModel.OptionsModel.JSONOptionModel.BypassAnalytics, Mode=TwoWay}"/>
                     <Label Margin="10,0,0,0" Content="Bypass analytics" VerticalAlignment="Center" Foreground="White"/>
                 </StackPanel>
 
                 <StackPanel Grid.Row="4" Orientation="Horizontal">
-                    <ToggleButton Height="20" IsChecked="{Binding ProxyViewModel.OptionsViewModel.OptionsModel.BypassLogin}"/>
+                    <ToggleButton Height="20" IsChecked="{Binding ProxyViewModel.OptionsViewModel.OptionsModel.JSONOptionModel.BypassLogin, Mode=TwoWay}"/>
                     <Label Margin="10,0,0,0" Content="Bypass login" VerticalAlignment="Center" Foreground="White"/>
                 </StackPanel>
 
                 <StackPanel Grid.Row="5" Orientation="Horizontal">
-                    <ToggleButton Height="20" IsChecked="{Binding ProxyViewModel.OptionsViewModel.OptionsModel.FakeLocation}"/>
+                    <ToggleButton Height="20" IsChecked="{Binding ProxyViewModel.OptionsViewModel.OptionsModel.JSONOptionModel.FakeLocation, Mode=TwoWay}"/>
                     <Label Margin="10,0,0,0" Content="Fake location" VerticalAlignment="Center" Foreground="White"/>
                 </StackPanel>
 
                 <StackPanel Grid.Row="6" Orientation="Horizontal">
-                    <ToggleButton Height="20" IsChecked="{Binding ProxyViewModel.OptionsViewModel.OptionsModel.ForceClientValidation}"/>
+                    <ToggleButton Height="20" IsChecked="{Binding ProxyViewModel.OptionsViewModel.OptionsModel.JSONOptionModel.ForceClientValidation, Mode=TwoWay}"/>
                     <Label Margin="10,0,0,0" Content="Force client validation" VerticalAlignment="Center" Foreground="White"/>
                 </StackPanel>
 
                 <StackPanel Grid.Row="7" Orientation="Horizontal">
-                    <ToggleButton Height="20" IsChecked="{Binding ProxyViewModel.OptionsViewModel.OptionsModel.ForceIncentives}"/>
+                    <ToggleButton Height="20" IsChecked="{Binding ProxyViewModel.OptionsViewModel.OptionsModel.JSONOptionModel.ForceIncentives, Mode=TwoWay}"/>
                     <Label Margin="10,0,0,0" Content="Force incentives" VerticalAlignment="Center" Foreground="White"/>
                 </StackPanel>
             </Grid>
@@ -85,7 +85,12 @@
         </Grid>
 
         <Grid Grid.Row="3" VerticalAlignment="Center">
-            <Button Style="{StaticResource FullButton}" Content="{Binding ProxyViewModel.ProxyModel.Label}" Command="{Binding ProxyViewModel.ChangeStateProxyCommand}"/>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Style="{StaticResource FullButton}" Content="{Binding ProxyViewModel.ProxyModel.Label}" Command="{Binding ProxyViewModel.ChangeStateProxyCommand}"/>
+            <Button Grid.Column="1" Style="{StaticResource FullButton}" Content="Save" Command="{Binding ProxyViewModel.OptionsViewModel.SaveOptionsCommand}"/>
         </Grid>
     </Grid>
 </UserControl>

@@ -1,23 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using static Kataana.Models.JSON.JSONSettingsModel;
 
-namespace Kataana.Models
+namespace Kataana.Models.JSON
 {
-    public class OptionsModel: BaseModel
+    public class JSONOptionModel: BaseModel
     {
-        private string _optionFile;
-        public string OptionFile
-        {
-            get { return _optionFile; }
-            set { SetProperty(ref _optionFile, value); }
-        }
-
-        private JSON.JSONOptionModel _JSONOptionModel;
-        public JSON.JSONOptionModel JSONOptionModel
-        {
-            get { return _JSONOptionModel; }
-            set { SetProperty(ref _JSONOptionModel, value); }
-        }
-
         private bool _temporaryUnlock;
         public bool TemporaryUnlock
         {
